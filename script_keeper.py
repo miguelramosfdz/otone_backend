@@ -22,7 +22,7 @@ def wifi_scan(data):
 
 def change_hostname(data):
     if data and len(data):
-        subprocess.call(['sudo','/home/pi/otone_scripts/set_hostname.sh',str(data)])
+        subprocess.call(['/home/pi/otone_scripts/set_hostname.sh',str(data)])
 	
 def get_wifi_ip_address():
     return_dict = collections.OrderedDict({
@@ -52,10 +52,10 @@ def set_connection_status(num):
     subprocess.call(['/home/pi/otone_scripts/set_ot_config_connection_status.sh',str(num)])
 
 def poweroff():
-    subprocess.call(['sudo','poweroff'])
+    subprocess.call(['poweroff'])
 
 def reboot():
-    subprocess.call(['sudo', 'reboot'])
+    subprocess.call(['reboot'])
 
 
 def connection():
@@ -66,8 +66,8 @@ def connection():
     return return_dict
 
 def share_inet():
-    subprocess.call(['sudo','ifdown','eth0'])
-    subprocess.call(['sudo','ifup','eth0'])
+    subprocess.call(['ifdown','eth0'])
+    subprocess.call(['ifup','eth0'])
 
 @asyncio.coroutine
 def per_data():
@@ -114,7 +114,7 @@ def update(updatee):
         if updatee == "piconfigs":
             subprocess.call(['/home/pi/otone_scripts/update_configs.sh'])
             subprocess.call(["sleep", "10"])
-            subprocess.call(["sudo reboot"])
+            subprocess.call(["reboot"])
         else:
             subprocess.call(['/home/pi/otone_scripts/update_something.sh',str(updatee)])
             subprocess.call(["sleep", "10"])
