@@ -136,6 +136,7 @@ class Pipette(Tool):
                     theContainer = self.theContainers[containerName]
                     depth = 0
                     if 'depth' in theContainer:
+                        print('depth in theContainer: ',depth)
                         depth = theContainer['depth']
                     temploc['container'] = {
                         'x' : theContainer['x'],
