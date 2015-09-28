@@ -4,7 +4,7 @@ import asyncio, json
 from file_io import FileIO
 import script_keeper as sk
 
-debug = True
+debug = False
 io_debug = False
 verbose = False
 
@@ -403,6 +403,8 @@ class Smoothie(object):
                             pass
                     else:
                         if axis=='X' or axis=='Y':
+                            print('smoothie_ser2net.move --> coords_list[',n,']:',value)
+                            print('self.theState[direction][',n,']:',self.theState['direction'][n])
                             if value < 0 and self.theState['direction'][n]==0:
                                 self.theState['direction'][n] = slack#0.5
                                 value = value - self.theState['direction'][n]

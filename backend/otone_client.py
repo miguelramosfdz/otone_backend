@@ -226,9 +226,9 @@ def instantiate_objects():
     def periodically_send_ip_addresses():
         """Coroutine that periodically sends information to browser
         """
-        if debug == True and verbose == True: FileIO.log('periodically_send_ip_addresses called')
+        #if debug == True and verbose == True: FileIO.log('periodically_send_ip_addresses called')
         while True:
-            if debug == True and verbose == True: FileIO.log('periodically_send_ip_addresses again...')
+            #if debug == True and verbose == True: FileIO.log('periodically_send_ip_addresses again...')
             yield from asyncio.sleep(2)
             stuff = yield from sk.per_data()
             session_factory._myAppSession.publish('com.opentrons.robot_to_browser_ctrl',json.dumps(stuff,sort_keys=True,indent=4,separators=(',',': ')))
