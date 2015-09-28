@@ -140,7 +140,7 @@ class Pipette(Tool):
                     temploc['container'] = {
                         'x' : theContainer['x'],
                         'y' : theContainer['y'],
-                        'z' : (theContainer['z']+depth)
+                        'z' : (theContainer['z']-depth)
                     }
                 else:
                     if debug == True: FileIO.log('Cannot find container ',containerName)
