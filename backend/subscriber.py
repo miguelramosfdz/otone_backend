@@ -159,7 +159,10 @@ class Subscriber():
         if 'axis' in data and 'name' in data:
             axis = data['axis']
             container_ = data['name']
-            self.head.calibrate_container(axis, container_)
+            depth = 0
+            if 'depth' in data:
+                depth = data['depth']
+            self.head.calibrate_container(axis, container_, depth)
         self.get_calibrations()
 
 

@@ -96,7 +96,8 @@ class Smoothie(object):
     }
 
     old_msg = ""
-    
+    slack = 0.5
+
     def __init__(self, outer):
         self.my_transport = None
         self.outer = outer
@@ -385,7 +386,7 @@ class Smoothie(object):
                 if n.upper()=='X' or n.upper()=='Y' or n.upper()=='Z' or n.upper()=='A' or n.upper()=='B':
                     axis = n.upper()
                     cmd = cmd + axis
-
+                    
                     if absolMov == True:
                         try:
                             if float(value)<0:
@@ -394,7 +395,7 @@ class Smoothie(object):
                             if axis=='X' or axis=='Y':
                                 tvalue = float(self.theState[n])
                                 if value < tvalue and self.theState['direction'][n]==0:
-                                    self.theState['direction'][n] = 0.5
+                                    self.theState['direction'][n] = slack#0.5
                                 elif value > tvalue and self.theState['direction'][n]>0:
                                     self.theState['direction'][n] = 0
                                 value = value - self.theState['direction'][n]
@@ -403,7 +404,7 @@ class Smoothie(object):
                     else:
                         if axis=='X' or axis=='Y':
                             if value < 0 and self.theState['direction'][n]==0:
-                                self.theState['direction'][n] = 0.5
+                                self.theState['direction'][n] = slack#0.5
                                 value = value - self.theState['direction'][n]
                             elif value > 0 and self.theState['direction'][n]>0:
                                 value = value + self.theState['direction'][n]

@@ -134,10 +134,13 @@ class Pipette(Tool):
                 if(containerName in self.theContainers):
                     # save the container's coords
                     theContainer = self.theContainers[containerName]
+                    depth = 0
+                    if 'depth' in theContainer:
+                        depth = theContainer['depth']
                     temploc['container'] = {
                         'x' : theContainer['x'],
                         'y' : theContainer['y'],
-                        'z' : theContainer['z']
+                        'z' : (theContainer['z']+depth)
                     }
                 else:
                     if debug == True: FileIO.log('Cannot find container ',containerName)
@@ -253,13 +256,13 @@ class Pipette(Tool):
             #js for i=0  i<containerNameArray.length  i++:
             for i in range(0,len(containerNameArray)):
                 if containerNameArray[i] not in list(self.theContainers.keys()):
-                    self.theContainers[containerNameArray[i]] = {'x' : None,'y' : None,'z' : None, 'rel_x' : None,'rel_y' : None,'rel_z' : None}
+                    self.theContainers[containerNameArray[i]] = {'x' : None,'y' : None,'z' : None, 'rel_x' : None,'rel_y' : None,'rel_z' : None, 'depth' : None}
                     
         if debug == True and verbose == True: FileIO.log('\nAFTER self.theContainers:\n',self.theContainers,'\n')
         return self.theContainers
 
     #from pipette.js
-    def calibrate_container(self, containerName, coords):
+    def calibrate_container(self, containerName, coords, depth):
         """Set the absolute location coordinates of a given container for this pipette
         """
         if debug == True:
@@ -287,6 +290,8 @@ class Pipette(Tool):
             #                self.theContainers[containerName]['rel_z'] = self.theContainers[containerName]['z'] - self.theContainers[self.tip_rack_origin]['z']
 
             #else:
+            self.theContainers[containerName]['depth'] = depth
+
             FileIO.log('type(coords) = ',type(coords))
             if coords['x'] is not None:
                 self.theContainers[containerName]['x'] = coords['x']

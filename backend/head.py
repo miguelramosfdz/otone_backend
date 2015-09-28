@@ -429,13 +429,13 @@ class Head:
                 self.save_pipette_values()
 
 
-    def calibrate_container(self, pipette, container):   
+    def calibrate_container(self, pipette, container, depth):   
         """Set the location of a container
         """
         if debug == True: FileIO.log('head.calibrate_container called')
         if pipette and self.PIPETTES[pipette]:     
             state = self.smoothieAPI.get_state()
-            self.PIPETTES[pipette].calibrate_container(container,state)
+            self.PIPETTES[pipette].calibrate_container(container,state, depth)
 
              
     def save_volume(self, data):
