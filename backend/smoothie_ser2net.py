@@ -96,7 +96,7 @@ class Smoothie(object):
     }
 
     old_msg = ""
-    slack = 0.5
+    
 
     def __init__(self, outer):
         self.my_transport = None
@@ -110,6 +110,7 @@ class Smoothie(object):
         self.already_trying = False
         self.ack_msg_rcvd = "ok"
         self.state_ready = 0
+        self.slack = 0.5
 
     class CB_Factory(asyncio.Protocol):
         proc_data = ""
@@ -395,7 +396,7 @@ class Smoothie(object):
                             if axis=='X' or axis=='Y':
                                 tvalue = float(self.theState[n])
                                 if value < tvalue and self.theState['direction'][n]==0:
-                                    self.theState['direction'][n] = slack#0.5
+                                    self.theState['direction'][n] = self.slack#0.5
                                 elif value > tvalue and self.theState['direction'][n]>0:
                                     self.theState['direction'][n] = 0
                                 value = value - self.theState['direction'][n]
@@ -406,7 +407,7 @@ class Smoothie(object):
                             print('smoothie_ser2net.move --> coords_list[',n,']:',value)
                             print('self.theState[direction][',n,']:',self.theState['direction'][n])
                             if value < 0 and self.theState['direction'][n]==0:
-                                self.theState['direction'][n] = slack#0.5
+                                self.theState['direction'][n] = self.slack#0.5
                                 value = value - self.theState['direction'][n]
                             elif value > 0 and self.theState['direction'][n]>0:
                                 value = value + self.theState['direction'][n]
