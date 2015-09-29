@@ -394,6 +394,8 @@ class Subscriber():
               'reboot' : lambda self: self.reboot(),
               'shareinet': lambda self: self.loop.create_task(self.share_inet()),
               'restart' : lambda self: self.restart(),
-              'containerDepthOverride': lambda self, data: self.container_depth_override(data)
+              'containerDepthOverride': lambda self, data: self.container_depth_override(data),
+              'saveContainersLibrary' : lambda self, data: print('add code to save containers library'),
+              'saveContainerPositions' : lambda self, data: print('add code to save containers library')
               }
     
