@@ -12,7 +12,7 @@
       }
     },
     "tube-rack-.75ml":{
-      "locations":[
+      "locations":{
         "A1":{
           "x":0,
           "y":0,
@@ -205,7 +205,7 @@
           "diameter":6,
           "total-liquid-volume":750
         }
-      ],
+      },
       "depth":20
     },
     "e-gelgol":{
@@ -213,7 +213,7 @@
         "x":13.5,
         "y":16.5
       },
-      "locations":[
+      "locations":{
         "A1":{
           "x":0,
           "y":0,
@@ -982,7 +982,7 @@
           "diameter":1,
           "total-liquid-volume":2
         }
-      ],
+      },
       "depth":2
     },
     "96-deep-well":{
@@ -11418,4 +11418,3 @@
     }
   }
 }
-
