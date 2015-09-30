@@ -346,18 +346,18 @@ class Pipette(Tool):
                     self.theContainers[container_name]['y'] = containers_dict[container_name]['y']
                 if container_value['z'] is not None:
                     self.theContainers[container_name]['z'] = containers_dict[container_name]['z']
-                if container_value['rel_x'] is not None:
+                if 'rel_x' in container_value:
                     self.theContainers[container_name]['rel_x'] = containers_dict[container_name]['rel_x']
                 else:
-                    if self.theContainers[container_name]['rel_x'] is not None: del self.theContainers[container_name]['rel_x']
-                if container_value['rel_y'] is not None:
+                    if 'rel_x' in self.theContainers[container_name]: del self.theContainers[container_name]['rel_x']
+                if 'rel_y' in container_value:
                     self.theContainers[container_name]['rel_y'] = containers_dict[container_name]['rel_y']
                 else:
-                    if self.theContainers[container_name]['rel_y'] is not None: del self.theContainers[container_name]['rel_y']
-                if container_value['rel_z'] is not None:
+                    if 'rel_y' in self.theContainers[container_name]: del self.theContainers[container_name]['rel_y']
+                if 'rel_z' in container_value:
                     self.theContainers[container_name]['rel_z'] = containers_dict[container_name]['rel_z']
                 else:
-                    if self.theContainers[container_name]['rel_z'] is not None: del self.theContainers[container_name]['rel_z']
+                    if 'rel_z' in self.theContainers[container_name]: del self.theContainers[container_name]['rel_z']
             else:
                 self.theContainers[container_name] = containers_dict[container_name]
 
