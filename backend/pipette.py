@@ -338,7 +338,7 @@ class Pipette(Tool):
         for container_name in self.theContainers:
             if container_name not in containers_dict:
                 del self.theContainers[container_name]
-        for container_name, container_value in containers_dict.info():
+        for container_name, container_value in containers_dict.items():
             if container_name in self.theContainers:
                 if container_value['x'] is not None:
                     self.theContainers[container_name]['x'] = containers_dict[container_name]['x']
