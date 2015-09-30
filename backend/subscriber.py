@@ -106,7 +106,7 @@ class Subscriber():
 
 
     def dispatch_message(self, message):
-        """The first point of contact for incoming messages.
+        """The first point of contact for incoming messages. Converts data received into python dictionary
         """
         if debug == True:
             FileIO.log('subscriber.dispatch_message called')
@@ -171,6 +171,11 @@ class Subscriber():
         container_name = data['name']
         new_depth = data['depth']
         self.deck.container_depth_override(container_name,new_depth)
+
+
+    def save_containers_library(self, data):
+        self.deck.save_containers(data)
+        self.deck.publish_containers()
 
 
     def get_calibrations(self):
@@ -395,7 +400,7 @@ class Subscriber():
               'shareinet': lambda self: self.loop.create_task(self.share_inet()),
               'restart' : lambda self: self.restart(),
               'containerDepthOverride': lambda self, data: self.container_depth_override(data),
-              'saveContainersLibrary' : lambda self, data: print('add code to save containers library'),
-              'saveContainerPositions' : lambda self, data: print('add code to save containers library')
+              'saveContainersLibrary' : lambda self, data: self.save_containers_library(data),
+              'saveContainerPositions' : lambda self, data: self.head.save_container_positions(data)
               }
     
