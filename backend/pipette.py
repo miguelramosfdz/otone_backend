@@ -336,7 +336,7 @@ class Pipette(Tool):
 
     def save_container_positions(self,containers_dict):
         for container_name in self.theContainers:
-            if container_name is not in containers_dict:
+            if container_name not in containers_dict:
                 del self.theContainers[container_name]
         for container_name, container_value in containers_dict.info():
             if container_name in self.theContainers:
