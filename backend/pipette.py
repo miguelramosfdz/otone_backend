@@ -351,7 +351,7 @@ class Pipette(Tool):
                 else:
                     if self.theContainers[container_name]['rel_x'] is not None: del self.theContainers[container_name]['rel_x']
                 if container_value['rel_y'] is not None:
-                    self.theContainers[contaienr_name]['rel_y'] = containers_dict[container_name]['rel_y']
+                    self.theContainers[container_name]['rel_y'] = containers_dict[container_name]['rel_y']
                 else:
                     if self.theContainers[container_name]['rel_y'] is not None: del self.theContainers[container_name]['rel_y']
                 if container_value['rel_z'] is not None:
