@@ -246,7 +246,6 @@ class Pipette(Tool):
                 FileIO.log('\ncontainerNameArray:\n', containerNameArray,'\n')
                 FileIO.log('\nBEFORE self.theContainers:\n',self.theContainers,'\n')
 
-
         if containerNameArray and len(containerNameArray)>0:
             #self.theOldContainers = [self.theConold_name for old_name in self.theContainers if old_name in containerNameArray]
             for k in list(self.theContainers.keys()):
@@ -260,6 +259,7 @@ class Pipette(Tool):
                     
         if debug == True and verbose == True: FileIO.log('\nAFTER self.theContainers:\n',self.theContainers,'\n')
         return self.theContainers
+
 
     #from pipette.js
     def calibrate_container(self, containerName, coords, depth):
@@ -331,5 +331,37 @@ class Pipette(Tool):
             if absol % 1 > 0: absol = round(absol,2)
             #js return Number(absol)
             return absol
+
+
+    def save_container_positions(self,containers_dict):
+        for container_name in self.theContainers:
+            if container_name not in containers_dict:
+                del self.theContainers[container_name]
+        for container_name, container_value in containers_dict.items():
+            if container_name in self.theContainers:
+                if container_value['x'] is not None:
+                    self.theContainers[container_name]['x'] = containers_dict[container_name]['x']
+                if container_value['y'] is not None:
+                    self.theContainers[container_name]['y'] = containers_dict[container_name]['y']
+                if container_value['z'] is not None:
+                    self.theContainers[container_name]['z'] = containers_dict[container_name]['z']
+                if 'rel_x' in container_value:
+                    self.theContainers[container_name]['rel_x'] = containers_dict[container_name]['rel_x']
+                else:
+                    if 'rel_x' in self.theContainers[container_name]: del self.theContainers[container_name]['rel_x']
+                if 'rel_y' in container_value:
+                    self.theContainers[container_name]['rel_y'] = containers_dict[container_name]['rel_y']
+                else:
+                    if 'rel_y' in self.theContainers[container_name]: del self.theContainers[container_name]['rel_y']
+                if 'rel_z' in container_value:
+                    self.theContainers[container_name]['rel_z'] = containers_dict[container_name]['rel_z']
+                else:
+                    if 'rel_z' in self.theContainers[container_name]: del self.theContainers[container_name]['rel_z']
+            else:
+                self.theContainers[container_name] = containers_dict[container_name]
+
+
+
+
 
        

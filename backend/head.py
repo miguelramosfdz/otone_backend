@@ -519,6 +519,16 @@ class Head:
             if debug == True: FileIO.log('self.PIPETTES[',axis,']:\n\n',self.PIPETTES[axis],'\n')
         else:
             if debug == True: FileIO.log('head.load_pipette_values: No pipettes defined in PIPETTES')
+
+
+    def save_container_positions(self, cont_pos):
+        if 'a' in cont_pos.keys():
+            self.PIPETTES['a'].save_container_positions(cont_pos['a'])
+        if 'b' in cont_pos.keys():
+            self.PIPETTES['a'].save_container_positions(cont_pos['b'])
+        self.save_pipette_values()
+        self.publish_calibrations()
+
             
     #from planner.js
     # an array of new container names to be stored in each pipette
@@ -540,7 +550,7 @@ class Head:
         #doesn't map to smoothieAPI
         nameArray = []  
 
-        for containerName in new_deck :
+        for containerName in new_deck:
             nameArray.append(containerName) 
         
         response = {}  
