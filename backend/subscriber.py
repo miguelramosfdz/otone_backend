@@ -2,6 +2,7 @@ import json, collections, subprocess, asyncio
 from autobahn.asyncio.wamp import ApplicationSessionFactory
 from file_io import FileIO
 import script_keeper as sk
+from robot_protocol import RobotProtocol
 
 debug = True
 verbose = True
@@ -296,6 +297,11 @@ class Subscriber():
         sk.restart()
 
 
+    def robo(self, data):
+        robot = RobotProtocol(data)
+        self.instructions(json.dumps(roboto,sort_keys=True,indent=4,separators=(',',': ')))
+
+
     @asyncio.coroutine
     def update(self, data):
         """Intermediate step to have :class:`script_keeper` run update shell scripts
@@ -392,5 +398,6 @@ class Subscriber():
               'shareinet': lambda self: self.loop.create_task(self.share_inet()),
               'restart' : lambda self: self.restart(),
               'containerDepthOverride': lambda self, data: self.container_depth_override(data)
+              'theProtocol': lambda self, data: self.robo(data)
               }
     
