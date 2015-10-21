@@ -298,9 +298,9 @@ class Subscriber():
 
 
     def robo(self, data):
-        robot = RobotProtocol(data)
+        robot = RobotProtocol(json.loads(data,object_pairs_hook=collections.OrderedDict), self.deck.get_containers())
         self.instructions(json.dumps(roboto,sort_keys=True,indent=4,separators=(',',': ')))
-
+	#json.loads( object_pairs_hook=collections.OrderedDict),
 
     @asyncio.coroutine
     def update(self, data):
@@ -397,7 +397,7 @@ class Subscriber():
               'reboot' : lambda self: self.reboot(),
               'shareinet': lambda self: self.loop.create_task(self.share_inet()),
               'restart' : lambda self: self.restart(),
-              'containerDepthOverride': lambda self, data: self.container_depth_override(data)
+              'containerDepthOverride': lambda self, data: self.container_depth_override(data),
               'theProtocol': lambda self, data: self.robo(data)
               }
     

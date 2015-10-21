@@ -18,17 +18,27 @@ class RobotProtocol:
 		if isinstance(protocol, dict):
 			self.protocol = protocol
 		if isinstance(containers, dict):
-			self.labware_from_db = containers
+			self.labware_from_db = containers['containers']
 
 		self._deck = dict()
 
-		for variableName, variableValue in self.protocol.deck.items():
+		FileIO.log('protocol... ',type(protocol))
+		FileIO.log(protocol)
+
+		FileIO.log('containers... ',type(containers))
+		FileIO.log(list(containers['containers']))
+		FileIO.log('self.labware_from_db... ',type(self.labware_from_db))
+		FileIO.log(list(self.labware_from_db))
+
+		for variableName, variableValue in self.protocol['deck'].items():
 			_container = dict()
-			labwareName = variableValue.labware
+			FileIO.log('variableValue... ',type(variableValue))
+			FileIO.log(variableValue)
+			labwareName = variableValue['labware']
 			_container['labware'] = labwareName
 		
-			if len(list(labwware_from_db))>0 && labwareName in list(labware_from_db):
-				_container['locations'] = labware_from_db[labwareName]['locations']
+			if len(list(self.labware_from_db))>0 and labwareName in list(self.labware_from_db):
+				_container['locations'] = self.labware_from_db[labwareName]['locations']
 		
 				if 'locations' in list(_container):
 					for locationName, locationValue in _container['locations'].items():
@@ -36,13 +46,13 @@ class RobotProtocol:
 						if 'total-liquid-volume' in list(currentLocation):
 							self.createLiquidLocation(currentLocation)
 			else:
-				file_io.log('"',labwareName,'" not found in labware definitions')
+				FileIO.log('"',labwareName,'" not found in labware definitions')
 
 			self._deck[variableName] = _container
 
 		#2. Now add the starting ingredients to those created locations (wells)
 
-		for ingredientName, ingredientValue in self.protocol.ingredients.items():
+		for ingredientName, ingredientValue in self.protocol['ingredients'].items():
 			ingredientPartsList = ingredientValue
 			map(lambda self, ingredientPart: self.ingredientPartUpdate(ingredientPart),ingredientPartsList)
 
@@ -51,7 +61,7 @@ class RobotProtocol:
 
 		self._pipettes = dict()
 
-		for toolName, toolValue in protocol.head.items():
+		for toolName, toolValue in protocol['head'].items():
 			self._pipettes[toolName] = toolValue
 			self._pipettes['tip-rack-objs'] = dict()
 			self._pipettes['trash-container-objs'] = dict()
@@ -80,14 +90,14 @@ class RobotProtocol:
 			if isinstance(self.pipettes['trash-container']):
 				_trashcontainerName = self._pipettes[toolName]['trash-container'][0].strip()
 			else:
-				_trashcontainerName = self._pipettes[toolName].container.strip()
+				_trashcontainerName = self._pipettes[toolName]['container'].strip()
 			if len(_trashcontainerName)>0 and _trashcontainerName in list(self._deck):
-				trashLabware = self._deck[_trashcontainerName].labware
+				trashLabware = self._deck[_trashcontainerName]['labware']
 				if trashLabware is not None:
 					self._pipettes[toolName]['trash-container-objs'][_trashcontainerName] = dict()
 					self._pipettes[toolName]['trash-container-objs'][_trashcontainerName]['locations'] = self.containers[trashLabware].locations
 			else:
-				file_io.log('"',_trashcontainerName,'" not found in deck')
+				FileIO.log('"',_trashcontainerName,'" not found in deck')
 
 			_tr_list = list()
 			_tr_list = self._pipettes[toolName]['tip-racks']
@@ -104,14 +114,14 @@ class RobotProtocol:
 					_tr_objs[containerName]['clean-tips'] = list()
 					_tr_objs[containerName]['dirty-tips'] = list()
 
-					labwareName = self._deck[containerName].labware.strip()
+					labwareName = self._deck[containerName]['labware'].strip()
 
 					if labwareName in self.labware_from_db:
-						_locations = labware_from_db[labwareName].locations
+						_locations = labware_from_db[labwareName]['locations']
 						for locName in list(_locations):
 							_tr_objs[containerName]['clean-tips'].append(_locations[locName])
 					else:
-						file_io.log('"',labwareName,'" not found in labware definitions')
+						FileIO.log('"',labwareName,'" not found in labware definitions')
 				self._pipettes[toolName]['tip-rack-objs'] = _tr_objs
 				self._pipettes[toolName]['pickupTip'] = lambda self: self._pickupTip(self.pipette)
 				self._pipettes[toolName]['dropTip'] = lambda self: self._dropTip(self.pipette)
@@ -120,7 +130,7 @@ class RobotProtocol:
 
 		self.createdInstructions = list()
 
-		self._instructions = protocol.instructions
+		self._instructions = protocol['instructions']
 
 		for toolname in self._pipettes:
 			ci = dict(
@@ -129,7 +139,7 @@ class RobotProtocol:
 					'groups' : [
 						{
 							'command':'pipette',
-							'axis':self._pipettes[toolname].axis,
+							'axis':self._pipettes[toolname]['axis'],
 							'locations': [
 								{
 									'plunger':'blowout'
@@ -152,14 +162,14 @@ class RobotProtocol:
 			self.createdInstructions.append(ci)
 
 			for i in self._instructions:
-				currentPipette = self._pipettes[self._instructions[i].tool]
+				currentPipette = self._pipettes[self._instructions[i]['tool']]
 
 				if currentPipette is not None:
 					newInstruction = dict()
-					newInstruction['tool'] = currentPipette.tool
+					newInstruction['tool'] = currentPipette['tool']
 					newInstruction['groups'] = list()
 
-					for g in self._instructions[i].groups:
+					for g in self._instructions[i]['groups']:
 						newGroup = None
 						if 'transfer' in list(g):
 							newGroup = self.transfer(self._deck, pipette, g['transfer'])
@@ -193,13 +203,13 @@ class RobotProtocol:
 
 	def ingredientPartUpdate(self, ingredientPart):
 		if 'container' in list(ingredientPart) and ingredientPart['container'] in list(self._deck):
-			allLocations = self._deck[ingredientPart.container].locations
-				if 'location' in list(ingredientPart) and ingredientPart.location in list(allLocations):
-					currentLocation = allLocations[ingredientPart.location]
-					ingredientVolume = ingredientPart.volume
+			allLocations = self._deck[ingredientPart.container]['locations']
+			if 'location' in list(ingredientPart) and ingredientPart.location in list(allLocations):
+				currentLocation = allLocations[ingredientPart['location']]
+				ingredientVolume = ingredientPart['volume']
 
-					if isinstance(ingredientVolume, (int, float, complex)) and 'updateVolume' in list(currentLocation):
-						currentLocation.updateVolume(currentLocation, ingredientVolume)
+				if isinstance(ingredientVolume, (int, float, complex)) and 'updateVolume' in list(currentLocation):
+					currentLocation['updateVolume'](currentLocation, ingredientVolume)
 
 
 	def _pickupTip(self, pipette):
@@ -211,15 +221,15 @@ class RobotProtocol:
 
 		for rackName, rackValue in myRacks.items():
 			if len(rackValue['clean-tips']>0):
-				howManyTips = pipette['multi-channel'] ? 8 : 1 # <---- ????
+				howManyTips = 8 if (pipette['multi-channel'] == True) else 1
 				if not isinstance(howManyTips,int):
 					howManyTips = 1
-				newTipLocation = rackValue['clean-tips'] #.splice(0,1)[0]
+				newTipLocation = rackValue['clean-tips'][0:1][0] #.splice(0,1)[0]
 				newTipContainerName = ""
 				newTipContainerName = rackValue.container
 				rackValue['dirty-tips'].append(newTipLocation)
 				for n in range(howManyTips-1):
-					tempTip = rackValue['clean-tips'] #.splice(0,1)[0]
+					tempTip = rackValue['clean-tips'][0:1][0] #.splice(0,1)[0]
 					if tempTip is not None:
 						rackValue['dirty-tips'].append(tempTip)
 
@@ -229,8 +239,8 @@ class RobotProtocol:
 				rackValue['dirty-tips'] = []
 
 			if len(list(myRacks)) > 0:
-				newTipLocation = myRacks[myRacks.keys()[0]]['clean-tips'] #.splice(0,1)[0]
-				newTipContainerName = myRacks[myRacks.keys()[0]].container
+				newTipLocation = myRacks[myRacks.keys()[0]]['clean-tips'][0:1][0] #.splice(0,1)[0]
+				newTipContainerName = myRacks[myRacks.keys()[0]]['container']
 				myRacks[myRacks.keys()[0]]['dirty-tips'].append(newTipLocation)
 
 		moveList = list()
@@ -262,11 +272,11 @@ class RobotProtocol:
 
 		if isinstance(pipette['trash-container']):
 			trashContainerName = pipette['trash-container'][0]
-		else
-			trashContainerName = pipette['trash-container'].container
+		else:
+			trashContainerName = pipette['trash-container']['container']
 
 		trashLocation = None
-		for o,v in pipette['trash-container-objs'][trashContainerName].locations.items():
+		for o,v in pipette['trash-container-objs'][trashContainerName]['locations'].items():
 			trashLocation = v
 
 		movie = dict({'z':0})
@@ -292,17 +302,13 @@ class RobotProtocol:
 
 
 
-	def createPipetteGroup(self, type, theDeck, theTool, trasnferList):
-
-
-
 	def transfer(self, theDeck, theTool, transferList):
 		createdGroup = dict({
 			'command':'pipette',
 			'axis':theTool.axis,
 			'locations':list()
 			})
-		pickupList = theTool.pickupTip()
+		pickupList = theTool['pickupTip']()
 		createdGroup.locations.append(pickupList)
 
 		for i in transferList:
@@ -333,17 +339,17 @@ class RobotProtocol:
 				'axis':theTool.axis,
 				'locations':list()
 			})
-		pickupList = theTool.pickupTip()
-		createdGroup.locations.append(pickupList)
+		pickupList = theTool['pickupTip']()
+		createdGroup['locations'].append(pickupList)
 
 		toParamsList = distributeGroup['to']
 		totalPercentage = 0
 		for i in list(toParamsList):
 			totalPercentage += getPercentage(i.volume,theTool)
-		totalVolume = theTool.volume * totalPercentage
+		totalVolume = theTool['volume'] * totalPercentage
 		totalVolume += totalVolume * theTool['distribute-percentage']
-		if totalVolume > theTool.volume:
-			totalVolume = float(theTool.volume)
+		if totalVolume > theTool['volume']:
+			totalVolume = float(theTool['volume'])
 
 
 
@@ -353,7 +359,7 @@ class RobotProtocol:
 				'axis':theTool.axis,
 				'locations':list()
 			})
-		pickupList = theTool.pickupTip()
+		pickupList = theTool['pickupTip']()
 		createdGroup.locations.append(pickupList)
 
 		fromParamsList = consolidatedGroup['from']
@@ -361,20 +367,20 @@ class RobotProtocol:
 
 		for i in list(fromParamsList):
 			fromParams = i
-			totalPercentage += getPercentage(fromParams.volume, theTool)
-			fromParams.volume *= -1
+			totalPercentage += self.getPercentage(fromParams['volume'], theTool)
+			fromParams['volume'] *= -1
 			fromParams['extra-pull'] = consolidateGroup['extra-pull']
 
-			tempFromList = self.makePipettingMotion(theDeck, theTool, fromParams, i===0)
-			createdGroup.locations.append(tempFromList)
+			tempFromList = self.makePipettingMotion(theDeck, theTool, fromParams, i==0)
+			createdGroup['locations'].append(tempFromList)
 
-		totalVolume = totalPercentage * theTool.volume
+		totalVolume = totalPercentage * theTool['volume']
 
 		toParams = consolidatedGroup['to']
-		toParams.volume = totalVolume
+		toParams['volume'] = totalVolume
 
 		tempToArray = self.makePipettingMotion(theDeck, theTool, toParams, False)
-		createdGroup.locations.append(tempToArray)
+		createdGroup['locations'].append(tempToArray)
 
 		return createdGroup
 
@@ -386,33 +392,35 @@ class RobotProtocol:
 				'locations':list()
 			})
 
-		pickupList = theTool.pickupTip()
-		createdGroup.locations.append(pickupList)
+		pickupList = theTool['pickupTip']()
+		createdGroup['locations'].append(pickupList)
 
 		for i in list(mixListOfDicts):
 			thisParam = i
-			thisParam.volume *= -1
+			thisParam['volume'] *= -1
 			mixMoveCommands = self.makePipettingMotion(theDeck, theTool, thisParam, True)
-			createdGroup.locations.append(mixMoveCommands)
+			createdGroup['locations'].append(mixMoveCommands)
 
-		dropList = theTool.dropTip()
-		createdGroup.locations.append(dropList)
+		dropList = theTool['dropTip']()
+		createdGroup['locations'].append(dropList)
 
 		return createdGroup
 
 
 	def makePipettingMotion(self, theDeck, theTool, thisParams, shouldDropPlunger):
 		moveList = list()
-		containerName = thisParams.container
+		containerName = thisParams['container']
 		if containerName in list(theDeck) and 'locations' in list(theDeck[containerName]):
-			locationPos = theDeck[containerName].locations[thisParams.location]
+			locationPos = theDeck[containerName]['locations'][thisParams.location]
 
-			locationPos.updateVolume(float(thisParams.volume))
-			specifiedOffset = thisParams['tip-offset'] || 0
+			locationPos['updateVolume'](float(thisParams.volume))
+			specifiedOffset = 0
+			if 'tip-offset' in list(thisParams):
+				specifiedOffset = float(thisParams['tip-offset'])
 			arriveDepth = 0
-			bottomLimit = (locationPos.depth - 0.2) * -1
+			bottomLimit = (locationPos['depth'] - 0.2) * -1
 
-			if thisParams['liquid-tracking'] === True:
+			if thisParams['liquid-tracking'] == True:
 				arriveDepth = specifiedOffset-locationPos['current-liquid-offset']
 			else:
 				arriveDepth = bottomLimit + specifiedOffset
@@ -424,13 +432,13 @@ class RobotProtocol:
 
 			rainbowHeight = highestSpot - 5
 
-			if theTool.justPickedUp === True:
+			if theTool.justPickedUp == True:
 				rainbowHeight = 0
-				theTool.justPickedUp = False
+				theTool['justPickedUp'] = False
 
 			moveList.append(dict({'z':rainbowHeight}))
 
-			if shouldDropPlunger === True:
+			if shouldDropPlunger == True:
 				theTool['current-plunger'] = 0
 				moveList.append(dict({'plunger':'resting'}))
 				moveList.append(dict({
@@ -439,11 +447,11 @@ class RobotProtocol:
 						'container':containerName
 					}))
 				moveList.append(dict({
-						'z':1
+						'z':1,
 						'container':containerName
 					}))
 
-			if shouldDropPlunger === True:
+			if shouldDropPlunger == True:
 				theTool['current-plunger'] = 0.1
 				moveList.append(dict({
 						'plunger':theTool['current-plunger']
@@ -457,7 +465,7 @@ class RobotProtocol:
 						'z':arriveDepth,
 						'container':containerName
 					}))
-			if shouldDropPlunger === True:
+			if shouldDropPlunger == True:
 				theTool['current-plunger'] = 1
 				moveList.append(dict({
 						'plunger':theTool['current-plunger']
@@ -467,13 +475,13 @@ class RobotProtocol:
 						'delay':thisParams['delay']
 					}))
 			
-			plungerPercentage = self.getPercentage(thisParams.volume, theTool)
+			plungerPercentage = self.getPercentage(thisParams['volume'], theTool)
 			extraPercentage = 0
 
 			if 'repetitions' in list(thisParams):
-				locationPos.updateVolume(float(thisParams.volume * -1))
+				locationPos['updateVolume'](float(thisParams['volume'] * -1))
 
-				for i in range(float(thisParams.repititions)):
+				for i in range(int(thisParams['repititions'])):
 					moveList.append(dict({
 							'speed':theTool['up-plunger-speed']
 						}))
@@ -489,8 +497,8 @@ class RobotProtocol:
 						'plunger':theTool['current-plunger']
 						}))
 			else:
-				if shouldDropPlunger===True and 'extra-pull-volume' in list(theTool) and 'extra-pull' in list(thisParams):
-					extraPercentage = (float(theTool['extra-pull-volume'])/theTool.volume)
+				if shouldDropPlunger==True and 'extra-pull-volume' in list(theTool) and 'extra-pull' in list(thisParams):
+					extraPercentage = (float(theTool['extra-pull-volume'])/theTool['volume'])
 
 				moveList.append(dict({
 						'speed':theTool['up-plunger-speed']
@@ -502,7 +510,7 @@ class RobotProtocol:
 				moveList.append(dict({
 						'plunger':theTool['current-plunger']
 					}))
-				if extraPercentage!==0:
+				if extraPercentage!=0:
 					delayTime = 200
 					if not isinstance(theTool['extra-pull-delay']):
 						delayTime = abs(theTool['extra-pull-delay'])
@@ -562,12 +570,12 @@ class RobotProtocol:
 		amountToScale = 1
 
 		if absVolume is not None and theTool is not None and 'points' in list(theTool):
-			for i in range(len(theTool.points)-1):
-				if absVolume >= theTool.points[i].f1 and absVolume <= theTool.points[i+1].f1:
-					f1Diff = theTool.points[i+1].f1 - theTool.points[i].f1
-					f1Percentage = (absVolume - theTool.points[i].f1) / f1Diff
-					lowerScale = theTool.points[i].f1 / theTool.points[i].f2
-					upperScale = theTool.points[i+1].f1 / theTool.points[i+1].f2
+			for i in range(len(theTool['points'])-1):
+				if absVolume >= theTool['points'][i].f1 and absVolume <= theTool['points'][i+1].f1:
+					f1Diff = theTool['points'][i+1].f1 - theTool['points'][i].f1
+					f1Percentage = (absVolume - theTool['points'][i].f1) / f1Diff
+					lowerScale = theTool['points'][i].f1 / theTool['points'][i].f2
+					upperScale = theTool['points'][i+1].f1 / theTool['points'][i+1].f2
 
 					amountToScale = ((upperScale - lowerScale) * f1Percentage) + lowerScale
 
@@ -577,7 +585,7 @@ class RobotProtocol:
 		if realVolume < 0:
 			absVolume *= -1
 
-		return absVolume / theTool.volume
+		return absVolume / theTool['volume']
 
 
 
