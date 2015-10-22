@@ -298,8 +298,11 @@ class Subscriber():
 
 
     def robo(self, data):
-        robot = RobotProtocol(json.loads(data,object_pairs_hook=collections.OrderedDict), self.deck.get_containers())
-        self.instructions(json.dumps(roboto,sort_keys=True,indent=4,separators=(',',': ')))
+        roboto = RobotProtocol(json.loads(data,object_pairs_hook=collections.OrderedDict), self.deck.get_containers(), self.head.get_pipettes())
+        robo_instructions = roboto.process()
+        FileIO.log(json.dumps(robo_instructions,sort_keys=True,indent=4,separators=(',',': ')))
+	
+        self.instructions(json.dumps(robo_instructions,sort_keys=True,indent=4,separators=(',',': ')))
 	#json.loads( object_pairs_hook=collections.OrderedDict),
 
     @asyncio.coroutine
