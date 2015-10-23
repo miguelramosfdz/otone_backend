@@ -87,17 +87,19 @@ class RobotProtocol:
 			self._pipettes[toolName]['tip-rack-objs'] = dict()
 			self._pipettes[toolName]['trash-container-objs'] = dict()
 			self._pipettes[toolName]['current-plunger'] = 0
-
-			self._pipettes[toolName]['down-plunger-speed'] = 300
-			self._pipettes[toolName]['up-plunger-speed'] = 0
+			
 			self._pipettes[toolName]['distribute-percentage'] = 0
-
+			FileIO.log('toolName: ',toolName,' toolValue: ',toolValue)
 			if 'down-plunger-speed' in list(toolValue):
 				if isinstance(toolValue['down-plunger-speed'],(int,float,complex)):
 					self._pipettes[toolName]['down-plunger-speed'] = toolValue['down-plunger-speed']
+			else:
+				self._pipettes[toolName]['up-plunger-speed'] = 500
 			if 'up-plunger-speed' in list(toolValue):
 				if isinstance(toolValue['up-plunger-speed'],(int,float,complex)):
 					self._pipettes[toolName]['up-plunger-speed'] = toolValue['up-plunger-speed']
+			else:
+				self._pipettes[toolName]['down-plunger-speed'] = 300
 			if 'distribute-percentage' in list(toolValue):
 				if toolValue['distribute-percentage'] < 0:
 					self._pipettes[toolName]['distribute-percentage'] = 0
@@ -214,9 +216,9 @@ class RobotProtocol:
 							newInstruction['groups'].append(newGroup)
 							FileIO.log('newInstruction[groups]... ',type(newInstruction['groups']))
 							FileIO.log(newInstruction['groups'])
-							self.createdInstructions.extend(newInstruction)
-							FileIO.log('self.createdInstructions... ',type(self.createdInstructions))
-							FileIO.log(self.createdInstructions)
+				self.createdInstructions.append(newInstruction)
+				FileIO.log('self.createdInstructions... ',type(self.createdInstructions))
+				FileIO.log(self.createdInstructions)
 
 		return self.createdInstructions
 
@@ -354,7 +356,7 @@ class RobotProtocol:
 			'locations':list()
 			})
 		pickupList = theTool['pickupTip'](theTool)
-		createdGroup['locations'].append(pickupList)
+		createdGroup['locations'].extend(pickupList)
 
 		for i in transferList:
 			thisTransferParams = i
@@ -371,15 +373,16 @@ class RobotProtocol:
 				fromParams['extra-pull'] = thisTransferParams['extra-pull']
 
 			fromList = self.makePipettingMotion(theDeck, theTool, fromParams, True)
-			createdGroup['locations'].append(fromList) #replaces _addMovements(fromArray)
+			createdGroup['locations'].extend(fromList) #replaces _addMovements(fromArray)
 
 			toList = self.makePipettingMotion(theDeck, theTool, toParams, False)
-			createdGroup['locations'].append(toList)
+			createdGroup['locations'].extend(toList)
 
 		dropList = theTool['dropTip'](theTool)
-		createdGroup['locations'].append(dropList)
+		createdGroup['locations'].extend(dropList)
 
 		return createdGroup
+
 
 	def distribute(self, theDeck, theTool, distributeGroup):
 		createdGroup = dict({
@@ -388,7 +391,7 @@ class RobotProtocol:
 				'locations':list()
 			})
 		pickupList = theTool['pickupTip'](theTool)
-		createdGroup['locations'].append(pickupList)
+		createdGroup['locations'].extend(pickupList)
 
 		toParamsList = distributeGroup['to']
 		totalPercentage = 0
@@ -408,7 +411,7 @@ class RobotProtocol:
 				'locations':list()
 			})
 		pickupList = theTool['pickupTip'](theTool)
-		createdGroup['locations'].append(pickupList)
+		createdGroup['locations'].extend(pickupList)
 
 		fromParamsList = consolidatedGroup['from']
 		totalPercentage = 0
@@ -421,7 +424,7 @@ class RobotProtocol:
 				fromParams['extra-pull'] = consolidateGroup['extra-pull']
 
 			tempFromList = self.makePipettingMotion(theDeck, theTool, fromParams, i==0)
-			createdGroup['locations'].append(tempFromList)
+			createdGroup['locations'].extend(tempFromList)
 
 		totalVolume = totalPercentage * theTool['volume']
 
@@ -429,7 +432,7 @@ class RobotProtocol:
 		toParams['volume'] = totalVolume
 
 		tempToArray = self.makePipettingMotion(theDeck, theTool, toParams, False)
-		createdGroup['locations'].append(tempToArray)
+		createdGroup['locations'].extend(tempToArray)
 
 		return createdGroup
 
@@ -442,16 +445,16 @@ class RobotProtocol:
 			})
 
 		pickupList = theTool['pickupTip'](theTool)
-		createdGroup['locations'].append(pickupList)
+		createdGroup['locations'].extend(pickupList)
 
 		for i in list(mixListOfDicts):
 			thisParam = i
 			thisParam['volume'] *= -1
 			mixMoveCommands = self.makePipettingMotion(theDeck, theTool, thisParam, True)
-			createdGroup['locations'].append(mixMoveCommands)
+			createdGroup['locations'].extend(mixMoveCommands)
 
 		dropList = theTool['dropTip'](theTool)
-		createdGroup['locations'].append(dropList)
+		createdGroup['locations'].extend(dropList)
 
 		return createdGroup
 
@@ -494,12 +497,13 @@ class RobotProtocol:
 			if shouldDropPlunger == True:
 				theTool['current-plunger'] = 0
 				moveList.append(dict({'plunger':'resting'}))
-				moveList.append(dict({
+
+			moveList.append(dict({
 						'x':locationPos['x'],
 						'y':locationPos['y'],
 						'container':containerName
 					}))
-				moveList.append(dict({
+			moveList.append(dict({
 						'z':1,
 						'container':containerName
 					}))
@@ -524,7 +528,7 @@ class RobotProtocol:
 						'plunger':theTool['current-plunger']
 					}))
 			if 'delay' in list(thisParams):
-				if not isinstance(thisParams['delay'],(int,float,complex)):
+				if isinstance(thisParams['delay'],(int,float,complex)):
 					moveList.append(dict({
 							'delay':thisParams['delay']
 						}))
@@ -549,7 +553,7 @@ class RobotProtocol:
 						}))
 					theTool['current-plunger']-=plungerPercentage
 					moveList.append(dict({
-						'plunger':theTool['current-plunger']
+							'plunger':theTool['current-plunger']
 						}))
 			else:
 				if shouldDropPlunger==True and 'extra-pull-volume' in list(theTool) and 'extra-pull' in list(thisParams):
@@ -568,9 +572,9 @@ class RobotProtocol:
 				if extraPercentage!=0:
 					delayTime = 200
 					if 'extra-pull-delay' in list(theTool):
-						if not isinstance(theTool['extra-pull-delay']):
+						if isinstance(theTool['extra-pull-delay'],(int,float,complex)):
 							delayTime = abs(theTool['extra-pull-delay'])
-						moveList.append(dict({'delay':delaytime}))
+					moveList.append(dict({'delay':delaytime}))
 
 					moveList.append(dict({'speed':theTool['down-plunger-speed']}))
 
@@ -592,29 +596,30 @@ class RobotProtocol:
 					moveList.append(dict({'plunger':'blowout'}))
 
 				if 'touch-tip' in list(thisParams) and 'diameter' in list(locationPos):
-					moveList.append(dict({
-							'y':locationPos['diameter'] / 2,
-							'relative':True
-						}))
-					moveList.append(dict({
-							'y':-locationPos['diameter'],
-							'relative':True
-						}))
-					moveList.append(dict({
-							'y':locationPos['diameter'] / 2,
-							'relative':True
-						}))
-					moveList.append(dict({
-							'x':locationPos['diameter'] / 2,
-							'relative':True
-						}))
-					moveList.append(dict({
-							'x':-locationPos['diameter'],
-							'relative':True
-						}))
-					moveList.append(dict({
-							'x':locationPos['diameter'] / 2,
-							'relative':True
+					if thisParams['touch-tip'] == True:
+						moveList.append(dict({
+								'y':locationPos['diameter'] / 2,
+								'relative':True
+							}))
+						moveList.append(dict({
+								'y':-locationPos['diameter'],
+								'relative':True
+							}))
+						moveList.append(dict({
+								'y':locationPos['diameter'] / 2,
+								'relative':True
+							}))
+						moveList.append(dict({
+								'x':locationPos['diameter'] / 2,
+								'relative':True
+							}))
+						moveList.append(dict({
+								'x':-locationPos['diameter'],
+								'relative':True
+							}))
+						moveList.append(dict({
+								'x':locationPos['diameter'] / 2,
+								'relative':True
 						}))
 
 		return moveList
