@@ -544,6 +544,10 @@ class Smoothie(object):
         """Halt robot
         """
         if debug == True: FileIO.log('smoothie_ser2net.halt called')
+        if self.delay_handler is not None:
+            self.delay_handler.cancel()
+            self.delay_handler = None
+            self.delay_state()
         if self.my_transport is not None:
             #onOffString = self._dict['off'] + '\r\n' + self._dict['on']
             self.try_add(self._dict['off'] + '\r\n')
