@@ -81,7 +81,6 @@ sys.path.insert(0, os.path.join(dir_par_path, 'labware/labware'))
 FileIO.log(sys.path)
 import labware
 
-conts = labware.containers
 
 
 
