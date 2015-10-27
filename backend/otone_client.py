@@ -40,7 +40,8 @@ from protocol_runner import ProtocolRunner
 import script_keeper as sk
 from script_keeper import ScriptKeeper
 
-import labware.containers
+import otone_backend.labware.labware.containers
+
 
 
 debug = True
