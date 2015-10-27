@@ -456,7 +456,7 @@ class Smoothie(object):
             float_seconds = 0
         finally:
             if float_seconds >= 0:
-                start_time = my_loop.time()
+                start_time = self.my_loop.time()
                 end_time = start_time + float_seconds
                 self.theState['delaying'] = 1
                 self.on_state_change(self.theState)
