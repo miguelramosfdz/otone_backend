@@ -80,14 +80,16 @@ sys.path.insert(0, os.path.join(dir_par_path, 'labware'))
 sys.path.insert(0, os.path.join(dir_par_path, 'labware/labware'))
 FileIO.log(sys.path)
 import labware
-from labware import containers as contas
+from labware import containers as co_library
 
-FileIO.log('contas:')
-FileIO.log(contas.list_containers())
-FileIO.log('contas types:')
-FileIO.log(contas.list_container_types())
-for c in contas.list_containers()
-    FileIO.log(contas.generate_legacy_container(c,True))
+cos = co_library.list_containers()
+FileIO.log('co_library:')
+FileIO.log(cos)
+FileIO.log('co_library types:')
+FileIO.log(co_library.list_container_types())
+
+for c in cos:
+    FileIO.log(co_library.generate_legacy_container(c,True))
 
 
 if not os.path.isdir(fname_data):
