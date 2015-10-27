@@ -465,7 +465,7 @@ class Smoothie(object):
 
 
     def delay_message(self, time_left):
-        if time_left > 0:
+        if time_left > -1:
             if self.delay_callback is not None:
                 self.delay_callback(time_left)
                 self.my_loop.call_later(1,self.delay_message,time_left - 1)

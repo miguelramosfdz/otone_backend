@@ -402,6 +402,8 @@ class RobotProtocol:
 		if totalVolume > theTool['volume']:
 			totalVolume = float(theTool['volume'])
 
+		
+
 
 
 	def consolidate(self, theDeck, theTool, consolidateGroup):
@@ -570,7 +572,7 @@ class RobotProtocol:
 						'plunger':theTool['current-plunger']
 					}))
 				if extraPercentage!=0:
-					delayTime = 200
+					delayTime = 0.200
 					if 'extra-pull-delay' in list(theTool):
 						if isinstance(theTool['extra-pull-delay'],(int,float,complex)):
 							delayTime = abs(theTool['extra-pull-delay'])
