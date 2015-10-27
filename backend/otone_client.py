@@ -80,9 +80,12 @@ sys.path.insert(0, os.path.join(dir_par_path, 'labware'))
 sys.path.insert(0, os.path.join(dir_par_path, 'labware/labware'))
 FileIO.log(sys.path)
 import labware
+from labware import containers as contas
 
-
-
+FileIO.log('contas:')
+FileIO.log(contas.list_containers())
+FileIO.log('contas types:')
+FileIO.log(contas.list_container_types())
 
 
 if not os.path.isdir(fname_data):
