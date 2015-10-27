@@ -86,6 +86,8 @@ FileIO.log('contas:')
 FileIO.log(contas.list_containers())
 FileIO.log('contas types:')
 FileIO.log(contas.list_container_types())
+for c in contas.list_containers()
+    FileIO.log(contas.generate_legacy_container(c,True))
 
 
 if not os.path.isdir(fname_data):
