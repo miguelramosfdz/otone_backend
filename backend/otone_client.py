@@ -40,8 +40,6 @@ from protocol_runner import ProtocolRunner
 import script_keeper as sk
 from script_keeper import ScriptKeeper
 
-import otone_backend.labware.labware.containers
-
 
 
 debug = True
@@ -77,6 +75,10 @@ print('dir_par_part_path: ', dir_par_par_path)
 print('fname_data: ', fname_data)
 print('fname_default_containers: ', fname_default_containers)
 print('fname_data_containers: ', fname_data_containers)
+
+sys.path.insert(0, os.path.join(dir_par_path, 'labware'))
+import labware.containers
+
 
 
 if not os.path.isdir(fname_data):
