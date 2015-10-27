@@ -460,7 +460,7 @@ class Smoothie(object):
                 end_time = start_time + float_seconds
                 self.theState['delaying'] = 1
                 self.on_state_change(self.theState)
-                delay_handler = self.my_loop.call_at(end_time, self.delay_state)
+                self.delay_handler = self.my_loop.call_at(end_time, self.delay_state)
                 self.delay_message(float_seconds)
 
 
