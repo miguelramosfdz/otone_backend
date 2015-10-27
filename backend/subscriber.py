@@ -302,7 +302,7 @@ class Subscriber():
         robo_instructions = roboto.process()
         FileIO.log(json.dumps(robo_instructions,sort_keys=True,indent=4,separators=(',',': ')))
 	
-        self.instructions(json.dumps(robo_instructions,sort_keys=True,indent=4,separators=(',',': ')))
+        self.instructions(robo_instructions)#json.dumps(robo_instructions,sort_keys=True,indent=4,separators=(',',': ')))
 	#json.loads( object_pairs_hook=collections.OrderedDict),
 
     @asyncio.coroutine
