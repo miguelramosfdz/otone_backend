@@ -104,11 +104,14 @@ class Smoothie(object):
         self.position_callback = None
         self.limit_hit_callback = None
         self.move_callback = None
+        self.delay_callback = None
         self.my_loop = asyncio.get_event_loop()
         self.smoothieQueue = list()
         self.already_trying = False
         self.ack_msg_rcvd = "ok"
         self.state_ready = 0
+        self.delay_handler = None
+
 
     class CB_Factory(asyncio.Protocol):
         proc_data = ""
@@ -176,11 +179,17 @@ class Smoothie(object):
         if debug == True: FileIO.log('smoothie_ser2net.set_limit_hit_callback called')
         self.limit_hit_callback = callback
 
+
     def set_move_callback(self, callback):
         """Connect the external callback for move call
         """
         if debug == True: FileIO.log('smoothie_ser2net.set_move_callback called')
         self.move_callback = callback
+
+
+    def set_delay_callback(self, callback):
+        self.delay_callback = callback
+
 
     def connect(self):
         """Make a connection to Smoothieboard using :class:`CB_Factory`
@@ -435,21 +444,31 @@ class Smoothie(object):
         
 
 
-    def delay(self, milli_seconds):
+    def delay(self, seconds):
         """Delay for given number of milli_seconds
         """
         if debug == True: FileIO.log('smoothie_ser2net.delay called')
-        print('milli_seconds: ',milli_seconds)
+        print('milli_seconds: ',seconds)
         try:
-            float_milli_seconds = float(milli_seconds)
+            float_seconds = float(seconds)
         except:
-            print('*** error floating milli_seconds ***')
-            float_milli_seconds = 0
+            print('*** error floating seconds ***')
+            float_seconds = 0
         finally:
-            if float_milli_seconds >= 0:
-                self.my_loop.call_later(float(float_milli_seconds/1000.0), self.delay_state)
+            if float_seconds >= 0:
+                start_time = my_loop.time()
+                end_time = start_time + float_seconds
                 self.theState['delaying'] = 1
                 self.on_state_change(self.theState)
+                delay_handler = self.my_loop.call_at(end_time, self.delay_state)
+                self.delay_message(float_seconds)
+
+
+    def delay_message(self, time_left):
+        if time_left > 0:
+            if self.delay_callback is not None:
+                self.delay_callback(time_left)
+                self.my_loop.call_later(1,self.delay_message,time_left - 1)
 
 
     def delay_state(self):
