@@ -76,8 +76,9 @@ print('fname_data: ', fname_data)
 print('fname_default_containers: ', fname_default_containers)
 print('fname_data_containers: ', fname_data_containers)
 
-sys.path.insert(0, os.path.join(dir_par_path, 'labware'))
-import labware.containers
+sys.path.insert(0, os.path.join(dir_par_path, 'labware/labware'))
+FileIO.log(sys.path)
+import containers
 
 
 
