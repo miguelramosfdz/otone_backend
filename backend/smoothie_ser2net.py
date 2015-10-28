@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import asyncio, json 
+import asyncio, json, math
 from file_io import FileIO
 import script_keeper as sk
 
@@ -111,6 +111,8 @@ class Smoothie(object):
         self.ack_msg_rcvd = "ok"
         self.state_ready = 0
         self.delay_handler = None
+        self.delay_start = 0
+        self.delay_end = 0
 
 
     class CB_Factory(asyncio.Protocol):
@@ -456,19 +458,20 @@ class Smoothie(object):
             float_seconds = 0
         finally:
             if float_seconds >= 0:
-                start_time = self.my_loop.time()
-                end_time = start_time + float_seconds
+                self.start = self.my_loop.time()
+                self.end = self.start + float_seconds
                 self.theState['delaying'] = 1
                 self.on_state_change(self.theState)
-                self.delay_handler = self.my_loop.call_at(end_time, self.delay_state)
-                self.delay_message(float_seconds)
+                self.delay_handler = self.my_loop.call_at(self.end, self.delay_state)
+                self.delay_message()
 
 
-    def delay_message(self, time_left):
-        if time_left > -1:
+    def delay_message(self):
+        time_left = math.floor(self.end - self.my_loop.time())
+        if time_left >= 0:
             if self.delay_callback is not None:
                 self.delay_callback(time_left)
-                self.my_loop.call_later(1,self.delay_message,time_left - 1)
+                self.my_loop.call_later(1,self.delay_message)
 
 
     def delay_state(self):

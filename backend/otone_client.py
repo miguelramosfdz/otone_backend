@@ -88,8 +88,8 @@ FileIO.log(cos)
 FileIO.log('co_library types:')
 FileIO.log(co_library.list_container_types())
 
-for c in cos:
-    FileIO.log(co_library.generate_legacy_container(c,True))
+#for c in cos:
+#    FileIO.log(co_library.generate_legacy_container(c,True))
 
 
 if not os.path.isdir(fname_data):

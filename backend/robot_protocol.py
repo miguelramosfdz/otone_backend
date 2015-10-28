@@ -89,17 +89,17 @@ class RobotProtocol:
 			self._pipettes[toolName]['current-plunger'] = 0
 			
 			self._pipettes[toolName]['distribute-percentage'] = 0
-			FileIO.log('toolName: ',toolName,' toolValue: ',toolValue)
+			#FileIO.log('toolName: ',toolName,' toolValue: ',toolValue)
 			if 'down-plunger-speed' in list(toolValue):
 				if isinstance(toolValue['down-plunger-speed'],(int,float,complex)):
 					self._pipettes[toolName]['down-plunger-speed'] = toolValue['down-plunger-speed']
 			else:
-				self._pipettes[toolName]['up-plunger-speed'] = 500
+				self._pipettes[toolName]['down-plunger-speed'] = 300
 			if 'up-plunger-speed' in list(toolValue):
 				if isinstance(toolValue['up-plunger-speed'],(int,float,complex)):
 					self._pipettes[toolName]['up-plunger-speed'] = toolValue['up-plunger-speed']
 			else:
-				self._pipettes[toolName]['down-plunger-speed'] = 300
+				self._pipettes[toolName]['down-plunger-speed'] = 600
 			if 'distribute-percentage' in list(toolValue):
 				if toolValue['distribute-percentage'] < 0:
 					self._pipettes[toolName]['distribute-percentage'] = 0
@@ -111,7 +111,7 @@ class RobotProtocol:
 			_trashcontainerName = ""
 
 			if isinstance(self._pipettes[toolName]['trash-container'], list):
-				_trashcontainerName = self._pipettes[toolName][toolName]['trash-container'][0].strip()
+				_trashcontainerName = self._pipettes[toolName]['trash-container'][0].strip()
 			else:
 				_trashcontainerName = self._pipettes[toolName]['trash-container']['container'].strip()
 			if len(_trashcontainerName)>0 and _trashcontainerName in list(self._deck):
@@ -253,7 +253,7 @@ class RobotProtocol:
 
 	def _pickupTip(self, pipette):
 		myRacks = pipette['tip-rack-objs']
-		pipette.justPickedUp = True
+		pipette['justPickedUp'] = True
 
 		newTipLocation = None
 		newTipContainerName = None
@@ -271,6 +271,7 @@ class RobotProtocol:
 					tempTip = rackValue['clean-tips'][0:1][0] #.splice(0,1)[0]
 					if tempTip is not None:
 						rackValue['dirty-tips'].append(tempTip)
+				break;
 
 		if newTipLocation is not None:
 			for rackName, rackValue in myRacks.items():
@@ -402,8 +403,19 @@ class RobotProtocol:
 		if totalVolume > theTool['volume']:
 			totalVolume = float(theTool['volume'])
 
-		
+		fromParams = distributeGroup['list']
+		fromParams['volume'] = totalVolume * -1
 
+		if 'extra-pull' in list(distributeGroup):
+			fromParams['extra-pull'] = distributeGroup['extra-pull']
+		
+		tempFromList = self.makePipettingMotion(theDeck, theTool, fromParams, False)
+		createdGroup['locations'].extend(tempFromList)
+
+		dropList = theTool['dropTip'](theTool)
+		createdGroup['locations'].extend(dropList)
+
+		return createdGroup
 
 
 	def consolidate(self, theDeck, theTool, consolidateGroup):
@@ -422,6 +434,7 @@ class RobotProtocol:
 			fromParams = i
 			totalPercentage += self.getPercentage(fromParams['volume'], theTool)
 			fromParams['volume'] *= -1
+			
 			if 'extra-pull' in list(consolidateGroup):
 				fromParams['extra-pull'] = consolidateGroup['extra-pull']
 
@@ -433,8 +446,8 @@ class RobotProtocol:
 		toParams = consolidatedGroup['to']
 		toParams['volume'] = totalVolume
 
-		tempToArray = self.makePipettingMotion(theDeck, theTool, toParams, False)
-		createdGroup['locations'].extend(tempToArray)
+		tempToList = self.makePipettingMotion(theDeck, theTool, toParams, False)
+		createdGroup['locations'].extend(tempToList)
 
 		return createdGroup
 
@@ -473,24 +486,23 @@ class RobotProtocol:
 			specifiedOffset = 0
 			if 'tip-offset' in list(thisParams):
 				specifiedOffset = float(thisParams['tip-offset'])
-			arriveDepth = 0
+			
 			bottomLimit = (locationPos['depth'] - 0.2) * -1
+			arriveDepth = bottomLimit + specifiedOffset
 
 			if 'liquid-tracking' in list(thisParams):
 				if thisParams['liquid-tracking'] == True:
 					arriveDepth = specifiedOffset-locationPos['current-liquid-offset']
-				else:
-					arriveDepth = bottomLimit + specifiedOffset
 
-			if arriveDepth < bottomLimit:
-				arriveDepth = bottomLimit
+			#if arriveDepth < bottomLimit:
+			#	arriveDepth = bottomLimit
 			FileIO.log('theTool... ',type(theTool))
 			FileIO.log(theTool)
 			moveList.append(dict({'speed':theTool['down-plunger-speed']}))
 
 			rainbowHeight = self.highestSpot - 5
 
-			if theTool.justPickedUp == True:
+			if theTool['justPickedUp'] == True:
 				rainbowHeight = 0
 				theTool['justPickedUp'] = False
 
