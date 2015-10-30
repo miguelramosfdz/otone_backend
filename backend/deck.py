@@ -100,17 +100,17 @@ class Deck:
         for c in self.containers.list_containers():
             try:
                 temp_container = dict()
-                str_container = self.containers.generate_legacy_container(c,True),object_pairs_hook=collections.OrderedDict)
+                str_container = self.containers.generate_legacy_container(c,True)
                 if str_container is not None:
-                    temp_container = json.loads(str_container)
+                    temp_container = json.loads(str_container,object_pairs_hook=collections.OrderedDict)
                     list(temp_container)[0].replace('legacy.','')
                     new_containers['containers'].update(temp_container)
                 else:
                     FileIO.log('str_container is None')
             except KeyError:
                 temp_container = dict()
-                str_container = self.containers.generate_legacy_container('legacy.'+c,True),object_pairs_hook=collections.OrderedDict)
-                temp_container = json.loads(str_container)
+                str_container = self.containers.generate_legacy_container('legacy.'+c,True)
+                temp_container = json.loads(str_container,object_pairs_hook=collections.OrderedDict)
                 list(temp_container)[0].replace('legacy.','')
                 new_containers['containers'].update(temp_container)
         FileIO.log('new_containers: ')
