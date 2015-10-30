@@ -1,4 +1,4 @@
-import json, os
+import json, os, collections
 
 from deck_module import DeckModule
 from file_io import FileIO
