@@ -82,14 +82,20 @@ FileIO.log(sys.path)
 import labware
 from labware import containers as co_library
 
+co_library.load_legacy_containers_file(fname_default_containers)
 cos = co_library.list_containers()
 FileIO.log('co_library:')
 FileIO.log(cos)
 FileIO.log('co_library types:')
 FileIO.log(co_library.list_container_types())
 
-#for c in cos:
-#    FileIO.log(co_library.generate_legacy_container(c,True))
+for c in cos:
+    try:
+        FileIO.log(co_library.generate_legacy_container(c,True))
+        FileIO.log('try succeeded')
+    except KeyError:
+        FileIO.log(co_library.generate_legacy_container('legacy.'+c),True)
+        FileIO.log('try failed --> legacy worked')
 
 
 if not os.path.isdir(fname_data):
@@ -202,7 +208,7 @@ def instantiate_objects():
 
 
     #instantiate the deck
-    deck = Deck(def_start_protocol['deck'], publisher)
+    deck = Deck(def_start_protocol['deck'], publisher, co_library)
     if debug == True:
         FileIO.log('deck string: ', str(deck))
         FileIO.log('deck representation: ', repr(deck))
@@ -267,7 +273,7 @@ try:
                                         debug_wamp=False)
     loop = asyncio.get_event_loop()
 
-    subscriber = Subscriber(session_factory, loop)
+    subscriber = Subscriber(session_factory, loop, co_library)
     publisher = Publisher(session_factory)
     
 

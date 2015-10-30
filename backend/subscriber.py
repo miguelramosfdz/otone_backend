@@ -57,7 +57,7 @@ class Subscriber():
     """
     
 #Special Methods
-    def __init__(self, session,loop):
+    def __init__(self, session,loop, containers):
         """Initialize Subscriber object
         """
         if debug == True: FileIO.log('subscriber.__init__ called')
@@ -66,6 +66,7 @@ class Subscriber():
         self.runner = None
         self.caller = session
         self.loop = loop
+        self.containers = containers
         
     def __str__(self):
         return "Subscriber"

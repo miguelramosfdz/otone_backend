@@ -27,7 +27,7 @@ class Deck:
     +--+--+--+--+--+
     """
 #Special Methods
-    def __init__(self, modules, publisher):
+    def __init__(self, modules, publisher, containers):
         """Initialize the Deck
         
         modules = a dictionary of the modules needed on the deck of the form:
@@ -42,6 +42,7 @@ class Deck:
         if debug == True: FileIO.log('deck.__init__ called')
         self.modules = modules
         self.pubber = publisher
+        self.containers = containers
         self.path = os.path.abspath(__file__)
         self.dir_path = os.path.dirname(self.path)  
         self.dir_par_path = os.path.dirname(self.dir_path)
@@ -92,9 +93,25 @@ class Deck:
 
     def get_containers(self):
         if debug == True: FileIO.log('deck.get_containers called')
-        containers = FileIO.get_dict_from_json(os.path.join(self.dir_par_par_path,'otone_data/containers.json'))
-        return containers
-
+        #containers_old = FileIO.get_dict_from_json(os.path.join(self.dir_par_par_path,'otone_data/containers.json'))
+        #return containers_old
+        new_containers = dict({'containers':dict()})
+        
+        for c in self.containers.list_containers():
+            try:
+                temp_container = dict()
+                temp_container = json.loads(self.containers.generate_legacy_container(c,True),object_pairs_hook=collections.OrderedDict)
+                list(temp_container)[0].replace('legacy.','')
+                new_containers['containers'].update(temp_container)
+            except KeyError:
+                temp_container = dict()
+                temp_container = json.loads(self.containers.generate_legacy_container('legacy.'+c,True),object_pairs_hook=collections.OrderedDict)
+                list(temp_container)[0].replace('legacy.','')
+                new_containers['containers'].update(temp_container)
+        FileIO.log('new_containers: ')
+        FileIO.log(new_containers)
+        return new_containers
+                
 
     def publish_containers(self):
         if debug == True: FileIO.log('deck.publish_containers called')
