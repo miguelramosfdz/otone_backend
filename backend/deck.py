@@ -100,7 +100,7 @@ class Deck:
         for c in self.containers.list_containers():
             try:
                 temp_container = dict()
-                temp_container = self.containers.generate_legacy_container(c,True)
+                temp_container = self.containers.generate_legacy_container(c,False)
                 if temp_container is not None:
                     if len(list(temp_container)) > 0:
                         list(temp_container)[0].replace('legacy.','')
@@ -111,7 +111,7 @@ class Deck:
                     FileIO.log('temp_container is None(1)')
             except KeyError:
                 temp_container = dict()
-                temp_container = self.containers.generate_legacy_container('legacy.'+c,True)
+                temp_container = self.containers.generate_legacy_container('legacy.'+c,False)
                 if temp_container is not None:
                     if len(list(temp_container)) > 0:
                         list(temp_container)[0].replace('legacy.','')
