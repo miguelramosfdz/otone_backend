@@ -141,6 +141,8 @@ class RobotProtocol:
 
 					if labwareName in self.labware_from_db:
 						_locations = self.labware_from_db[labwareName]['locations']
+						FileIO.log(' *** locations ***')
+						FileIO.log(_locations)
 						for locName in list(_locations):
 							_tr_objs[containerName]['clean-tips'].append(_locations[locName])
 					else:
