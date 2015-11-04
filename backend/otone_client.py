@@ -150,7 +150,7 @@ class WampComponent(wamp.ApplicationSession):
                 'type':'backend_version',
                 'data':version
             }
-            self.publish('com.opentrons.robot_to_browser',msg)
+            self.publish('com.opentrons.robot_to_browser',json.dumps(msg))
         
         FileIO.log('about to publish com.opentrons.robot_ready TRUE')
         self.publish('com.opentrons.robot_ready',True)
@@ -158,7 +158,7 @@ class WampComponent(wamp.ApplicationSession):
             'type':'backend_version',
             'data':version
         }
-        self.publish('com.opentrons.robot_to_browser',msg)
+        self.publish('com.opentrons.robot_to_browser',json.dumps(msg))
         yield from self.subscribe(set_client_status, 'com.opentrons.browser_ready')
         yield from self.subscribe(subscriber.dispatch_message, 'com.opentrons.browser_to_robot')
 
