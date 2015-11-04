@@ -56,6 +56,7 @@ publisher = None
 def_start_protocol = None
 client_status = False
 crossbar_status = False
+version = '1.0.2pipy-containers'
 
 if debug == True: FileIO.log('starting up')
 #for testing purposes, read in a protocol.json file
@@ -140,13 +141,24 @@ class WampComponent(wamp.ApplicationSession):
         
         
         def set_client_status(status):
-            if debug == True: FileIO.log('otone_client : WampComponent.set_client_status called')
+            #if debug == True: 
+            FileIO.log('otone_client : WampComponent.set_client_status called')
             global client_status
             client_status = status
             self.publish('com.opentrons.robot_ready',True)
+            msg = {
+                'type':'backend_version',
+                'data':version
+            }
+            self.publish('com.opentrons.robot_to_browser',msg)
         
         FileIO.log('about to publish com.opentrons.robot_ready TRUE')
         self.publish('com.opentrons.robot_ready',True)
+        msg = {
+            'type':'backend_version',
+            'data':version
+        }
+        self.publish('com.opentrons.robot_to_browser',msg)
         yield from self.subscribe(set_client_status, 'com.opentrons.browser_ready')
         yield from self.subscribe(subscriber.dispatch_message, 'com.opentrons.browser_to_robot')
 
