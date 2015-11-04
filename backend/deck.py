@@ -99,7 +99,7 @@ class Deck:
         
         for c in self.containers.list_containers():
             try:
-                temp_container = dict({c:dict()})
+                temp_container = collections.OrderedDict({c:collections.OrderedDict()})
                 temp_container[c.replace("legacy.","")] = self.containers.generate_legacy_container(c,False)
                 if temp_container[c] is not None:
                     new_containers['containers'].update(temp_container)
