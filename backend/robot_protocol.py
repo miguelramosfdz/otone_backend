@@ -144,7 +144,7 @@ class RobotProtocol:
 						_locations = self.labware_from_db[labwareName]['locations']
 						FileIO.log(' *** locations ***')
 						FileIO.log(_locations)
-						locs = sorted(_locations).sort(key=self.sortIndex)
+						locs = list(_locations).sort(key=self.sortIndex)
 						FileIO.log('locs')
 						FileIO.log(locs)
 						for locName in locs:#list(_locations):
