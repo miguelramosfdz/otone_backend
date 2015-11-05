@@ -227,7 +227,7 @@ class RobotProtocol:
 		return self.createdInstructions
 
 	def sortIndex(self, index):
-		integer = index[:1]
+		integer = float(ord(index[:1]))
 		decimal = float(index[1:])/pow(10,len(index[1:]))
 		return integer+decimal
 
