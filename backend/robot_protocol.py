@@ -145,6 +145,8 @@ class RobotProtocol:
 						FileIO.log(' *** locations ***')
 						FileIO.log(_locations)
 						locs = sorted(_locations).sort(key=self.sortIndex)
+						FileIO.log('locs')
+						FileIO.log(locs)
 						for locName in locs:#list(_locations):
 							_tr_objs[containerName]['clean-tips'].append(_locations[locName])
 					else:
@@ -227,8 +229,8 @@ class RobotProtocol:
 		return self.createdInstructions
 
 	def sortIndex(self, index):
-		integer = float(ord(index[:1]))
-		decimal = float(index[1:])/pow(10,len(index[1:]))
+		integer = ord(index[:1])*pow(10,len(index[1:]))
+		decimal = int(index[1:])#/pow(10,len(index[1:]))
 		return integer+decimal
 
 
