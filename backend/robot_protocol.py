@@ -143,11 +143,16 @@ class RobotProtocol:
 					if labwareName in self.labware_from_db:
 						_locations = self.labware_from_db[labwareName]['locations']
 						FileIO.log(' *** locations ***')
-						FileIO.log(_locations)
-						locs = list(_locations).sort(key=self.sortIndex)
-						FileIO.log('locs')
-						FileIO.log(locs)
-						for locName in locs:#list(_locations):
+						#FileIO.log(_locations)
+						l_locations = list(_locations)
+						FileIO.log(l_locations)
+						l_locations.sort(key=self.sortIndex)
+						FileIO.log('after sort...')
+						FileIO.log(l_locations)
+						#locs = list(_locations).sort(key=self.sortIndex)
+						#FileIO.log('locs')
+						#FileIO.log(locs)
+						for locName in l_locations: #locs:#list(_locations):
 							_tr_objs[containerName]['clean-tips'].append(_locations[locName])
 					else:
 						FileIO.log('"',labwareName,'" not found in labware definitions')
@@ -229,6 +234,7 @@ class RobotProtocol:
 		return self.createdInstructions
 
 	def sortIndex(self, index):
+		FileIO.log('sortIndex called')
 		integer = ord(index[:1])*pow(10,len(index[1:]))
 		decimal = int(index[1:])#/pow(10,len(index[1:]))
 		return integer+decimal
