@@ -113,6 +113,7 @@ class Smoothie(object):
         self.delay_handler = None
         self.delay_start = 0
         self.delay_end = 0
+        self.time_left = -1
 
 
     class CB_Factory(asyncio.Protocol):
@@ -467,11 +468,15 @@ class Smoothie(object):
 
 
     def delay_message(self):
-        time_left = math.floor(self.end - self.my_loop.time())
-        if time_left >= 0:
+        self.time_left = math.floor(self.end - self.my_loop.time())
+        if self.time_left >= 0:
             if self.delay_callback is not None:
-                self.delay_callback(time_left)
+                self.delay_callback(self.time_left)
                 self.my_loop.call_later(1,self.delay_message)
+        if self.time_left == -2:
+            if self.delay_callback is not None:
+                self.delay_callback(0)
+            self.time_left = -1
 
 
     def delay_state(self):
@@ -557,6 +562,7 @@ class Smoothie(object):
             self.try_add(self._dict['on'] + '\r\n')
             self.raw(self._dict['on'] + '\r\n') #just in case...
             #self.send(onOffString)    #self
+        self.time_left = -2
 
 
     def reset(self):
