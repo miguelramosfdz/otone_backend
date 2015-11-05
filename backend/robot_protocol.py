@@ -144,7 +144,7 @@ class RobotProtocol:
 						_locations = self.labware_from_db[labwareName]['locations']
 						FileIO.log(' *** locations ***')
 						FileIO.log(_locations)
-						locs = _locations.keys().sort(key=self.sortIndex)
+						locs = list(_locations.keys()).sort(key=self.sortIndex)
 						for locName in list(locs):#list(_locations):
 							_tr_objs[containerName]['clean-tips'].append(_locations[locName])
 					else:
