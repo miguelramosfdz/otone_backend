@@ -92,7 +92,7 @@ class Deck:
 
 
     def list_containers(self):
-        return self.contaienrs.list_containers()
+        return self.containers.list_containers()
 
 
     def get_containers(self):
