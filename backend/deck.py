@@ -91,6 +91,10 @@ class Deck:
         FileIO.writeFile(filename,container_text,lambda: FileIO.onError('\t\tError saving the file:\r\r'))              
 
 
+    def list_containers(self):
+        return self.contaienrs.list_containers()
+
+
     def get_containers(self):
         if debug == True: FileIO.log('deck.get_containers called')
         #containers_old = FileIO.get_dict_from_json(os.path.join(self.dir_par_par_path,'otone_data/containers.json'))
@@ -119,7 +123,7 @@ class Deck:
 
     def publish_containers(self):
         if debug == True: FileIO.log('deck.publish_containers called')
-        self.pubber.send_message('containers',self.get_containers())
+        self.pubber.send_message('containers',self.list_containers())
 
 
     def container_depth_override(self, container_name, new_depth):
