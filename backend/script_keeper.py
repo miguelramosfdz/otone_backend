@@ -274,6 +274,28 @@ def cool_update(data,start=1,total='',action='',option='NOCHANGE'):
             criterion = False
     return
 
+@asyncio.coroutine
+def new_update():
+    cmd = os.path.join(dir_path,'../scripts/update.sh')
+    create_update = asyncio.create_subprocess_exec(cmd,stdout=asyncio.subprocess.PIPE,stderr=asyncio.subprocess.STDOUT)
+    while criterion == True:
+        proc_update = yield from create_update
+        stdout_, stderr_ = yield from proc_update.communicate()
+
+        if stdout_ is not None:
+            stdout_str = stdout_.decode("utf-8")
+            FileIO.log('stdout... '+stdout_str)
+            read_progress(stdout_str)
+        else:
+            FileIO.log('stdout... None')
+        if stderr_ is not None:
+            FileIO.log('stderr...'+stderr_.decode("utf-8"))
+        else:
+            FileIO.log('stderr... None')
+        if proc_update.returncode is not None:
+            criterion = False
+    return
+
 
 def update(updatee):
     """Old update command
