@@ -350,6 +350,8 @@ class Subscriber():
                 sk.read_progress(failure_string)
             if sk.updated == True:
                 subprocess.call(['sudo','reboot'])
+        if data == "new":
+            
         else:
             fut = self.loop.create_task(sk.cool_update(data,action='START'))
             try:

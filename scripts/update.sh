@@ -1,6 +1,5 @@
 #!/bin/bash
 
-systemctl 
 
 cd /home/pi/
 
