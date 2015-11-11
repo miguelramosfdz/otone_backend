@@ -357,7 +357,7 @@ class Subscriber():
             except:
                 failure_string = '!ot!update!failure!msg:update timed out'
                 sk.read_progress(failure_string)
-                subprocess.call(['sudo','reboot'])
+                #subprocess.call(['sudo','reboot'])
         else:
             fut = self.loop.create_task(sk.cool_update(data,action='START'))
             try:
