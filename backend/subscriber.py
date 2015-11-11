@@ -351,7 +351,13 @@ class Subscriber():
             if sk.updated == True:
                 subprocess.call(['sudo','reboot'])
         if data == "new":
-            
+            fut = self.loop.create_task(sk.new_update())
+            try:
+                yield from asyncio.wait_for(fut,120)
+            except:
+                failure_string = '!ot!update!failure!msg:update timed out'
+                sk.read_progress(failure_string)
+                subprocess.call(['sudo','reboot'])
         else:
             fut = self.loop.create_task(sk.cool_update(data,action='START'))
             try:
