@@ -49,7 +49,7 @@ if [[ "$B_FF" == "Cloning into" && "$B_AR" == "Receiving objects: 100% Receiving
 	echo '!ot!!update!success!msg:way to go!'
 else
 	echo '!ot!!update!failure!msg:update failed, you may try again...'
-	sudo cp -al /home/pi/otone_backend_bak /home/pi/otone_backend
+	sudo mv -al /home/pi/otone_backend_bak /home/pi/
 fi
 
 
@@ -71,7 +71,7 @@ if [[ "$F_FF" == "Cloning into" && "$F_AR" == "Receiving objects: 100% Receiving
 	echo '!ot!!update!success!msg:way to go!'
 else
 	echo '!ot!!update!failure!msg:update failed, you may try again...'
-	sudo cp -al /home/pi/otone_frontend_bak /home/pi/otone_frontend
+	sudo mv -al /home/pi/otone_frontend_bak /home/pi/otone_frontend
 fi
 sudo systemctl disable otone.service
 sudo systemctl stop otone.service
