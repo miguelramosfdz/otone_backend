@@ -23,8 +23,14 @@ ssh-add ~/.ssh/ot_backend_rsa
 git clone --progress git@github.com:Opentrons/otone_backend.git > /home/pi/otone_scripts/gt_backend 2>&1
 if [ $? -eq 0 ]; then
 	echo OK
+	cd /home/pi/otone_backend
+	git rm labware
+	sudo rm -rf labware
+	git submodule add https://github.com/Opentrons/labware.git
+	cd /home/pi
 else
 	echo B FAIL
+	sudo mv /home/pi/otone_backend_bak /home/pi/otone_backend
 fi
 
 B_FF=$(grep -o 'Cloning into' /home/pi/otone_scripts/gt_backend)
@@ -63,9 +69,8 @@ if [ $? -eq 0 ]; then
 	echo OK
 else
 	echo FAIL
+	sudo mv /home/pi/otone_frontend_bak /home/pi/otone_frontend
 fi
-
-
 
 F_FF=$(grep -o 'Cloning into' /home/pi/otone_scripts/gt_frontend)
 F_AR=$(grep -o 'Receiving objects: 100%' /home/pi/otone_scripts/gt_frontend)
@@ -78,6 +83,7 @@ echo ''
 echo '/home/pi/otone_scripts/gt_frontend:'
 echo $(cat /home/pi/otone_scripts/gt_frontend)
 echo ''
+
 
 #if [[ "$F_FF" == "Cloning into" && "$F_AR" == "Receiving objects: 100% Receiving objects: 100%" && "$F_CC" == "Checking connectivity... done." ]]; then
 #	echo '!ot!!update!success!msg:way to go!'
