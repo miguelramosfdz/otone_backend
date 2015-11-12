@@ -34,7 +34,18 @@ echo '/home/pi/otone_scripts/gt_backend:'
 echo $(cat /home/pi/otone_scripts/gt_backend)
 echo ''
 
-if [[ "$B_FF" == "Cloning into" && "$B_AR" == "Receiving objects: 100% Receiving objects: 100%" && "$B_CC" == "Checking connectivity... done."]]; then
+
+if [[ "$B_FF" == "Cloning into" ]]; then
+	echo 'cloning into X'
+fi
+if [[ "$B_AR" == "Receiving objects: 100% Receiving objects: 100%" ]]; then
+	echo 'receiving objects X'
+fi
+if [[ "$B_CC" == "Checking connectivity... done." ]]; then
+	echo 'checking connectivity X'
+fi
+
+if [[ "$B_FF" == "Cloning into" && "$B_AR" == "Receiving objects: 100% Receiving objects: 100%" && "$B_CC" == "Checking connectivity... done." ]]; then
 	echo '!ot!!update!success!msg:way to go!'
 else
 	echo '!ot!!update!failure!msg:update failed, you may try again...'
@@ -56,7 +67,7 @@ echo '/home/pi/otone_scripts/gt_frontend:'
 echo $(cat /home/pi/otone_scripts/gt_frontend)
 echo ''
 
-if [[ "$F_FF" == "Cloning into" && "$F_AR" == "Receiving objects: 100% Receiving objects: 100%" && "$F_CC" == "Checking connectivity... done."]]; then
+if [[ "$F_FF" == "Cloning into" && "$F_AR" == "Receiving objects: 100% Receiving objects: 100%" && "$F_CC" == "Checking connectivity... done." ]]; then
 	echo '!ot!!update!success!msg:way to go!'
 else
 	echo '!ot!!update!failure!msg:update failed, you may try again...'
