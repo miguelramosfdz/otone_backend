@@ -21,6 +21,11 @@ ssh-add ~/.ssh/ot_frontend_rsa
 ssh-add ~/.ssh/ot_backend_rsa
 
 git clone --progress git@github.com:Opentrons/otone_backend.git > /home/pi/otone_scripts/gt_backend 2>&1
+if [ $? -eq 0 ]; then
+	echo OK
+else
+	echo B FAIL
+fi
 
 B_FF=$(grep -o 'Cloning into' /home/pi/otone_scripts/gt_backend)
 B_AR=$(grep -o 'Receiving objects: 100%' /home/pi/otone_scripts/gt_backend)
@@ -35,25 +40,32 @@ echo $(cat /home/pi/otone_scripts/gt_backend)
 echo ''
 
 
-if [[ "$B_FF" == "Cloning into" ]]; then
-	echo 'cloning into X'
-fi
-if [[ "$B_AR" == "Receiving objects: 100% Receiving objects: 100%" ]]; then
-	echo 'receiving objects X'
-fi
-if [[ "$B_CC" == "Checking connectivity... done." ]]; then
-	echo 'checking connectivity X'
-fi
+#if [[ "$B_FF" == "Cloning into" ]]; then
+#	echo 'cloning into X'
+#fi
+#if [[ "$B_AR" == "Receiving objects: 100% Receiving objects: 100%" ]]; then
+#	echo 'receiving objects X'
+#fi
+#if [[ "$B_CC" == "Checking connectivity... done." ]]; then
+#	echo 'checking connectivity X'
+#fi
 
-if [[ "$B_FF" == "Cloning into" && "$B_AR" == "Receiving objects: 100% Receiving objects: 100%" && "$B_CC" == "Checking connectivity... done." ]]; then
-	echo '!ot!!update!success!msg:way to go!'
-else
-	echo '!ot!!update!failure!msg:update failed, you may try again...'
-	sudo mv -al /home/pi/otone_backend_bak /home/pi/
-fi
+#if [[ "$B_FF" == "Cloning into" && "$B_AR" == "Receiving objects: 100% Receiving objects: 100%" && "$B_CC" == "Checking connectivity... done." ]]; then
+#	echo '!ot!!update!success!msg:way to go!'
+#else
+#	echo '!ot!!update!failure!msg:update failed, you may try again...'
+#	sudo mv -al /home/pi/otone_backend_bak /home/pi/
+#fi
 
 
 git clone --progress git@github.com:Opentrons/otone_frontend.git > /home/pi/otone_scripts/gt_frontend 2>&1
+if [ $? -eq 0 ]; then
+	echo OK
+else
+	echo FAIL
+fi
+
+
 
 F_FF=$(grep -o 'Cloning into' /home/pi/otone_scripts/gt_frontend)
 F_AR=$(grep -o 'Receiving objects: 100%' /home/pi/otone_scripts/gt_frontend)
@@ -67,11 +79,11 @@ echo '/home/pi/otone_scripts/gt_frontend:'
 echo $(cat /home/pi/otone_scripts/gt_frontend)
 echo ''
 
-if [[ "$F_FF" == "Cloning into" && "$F_AR" == "Receiving objects: 100% Receiving objects: 100%" && "$F_CC" == "Checking connectivity... done." ]]; then
-	echo '!ot!!update!success!msg:way to go!'
-else
-	echo '!ot!!update!failure!msg:update failed, you may try again...'
-	sudo mv -al /home/pi/otone_frontend_bak /home/pi/otone_frontend
-fi
+#if [[ "$F_FF" == "Cloning into" && "$F_AR" == "Receiving objects: 100% Receiving objects: 100%" && "$F_CC" == "Checking connectivity... done." ]]; then
+#	echo '!ot!!update!success!msg:way to go!'
+#else
+#	echo '!ot!!update!failure!msg:update failed, you may try again...'
+#	sudo mv -al /home/pi/otone_frontend_bak /home/pi/otone_frontend
+#fi
 sudo systemctl disable otone.service
 sudo systemctl stop otone.service
