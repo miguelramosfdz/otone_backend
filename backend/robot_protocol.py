@@ -497,7 +497,7 @@ class RobotProtocol:
 		FileIO.log('containerName: ',containerName)
 		FileIO.log('thisParams["location"]: ',thisParams['location'])
 		FileIO.log(containerName,' locations:')
-		FileIO.log(list(theDeck[containerName]))
+		FileIO.log(list(theDeck[containerName]['locations']))
 		if containerName in list(theDeck) and 'locations' in list(theDeck[containerName]):
 			locationPos = theDeck[containerName]['locations'][thisParams['location']]
 			#FileIO.log('locationPos... ',type(locationPos))
