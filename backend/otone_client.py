@@ -92,10 +92,10 @@ FileIO.log(co_library.list_container_types())
 
 for c in cos:
     try:
-        #FileIO.log(co_library.generate_legacy_container(c,True))
+        FileIO.log(co_library.generate_legacy_container(c,True))
         FileIO.log('try succeeded')
     except KeyError:
-        #FileIO.log(co_library.generate_legacy_container('legacy.'+c),True)
+        FileIO.log(co_library.generate_legacy_container('legacy.'+c),True)
         FileIO.log('try failed --> legacy worked')
 
 

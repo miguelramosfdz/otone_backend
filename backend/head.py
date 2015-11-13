@@ -7,7 +7,7 @@ from file_io import FileIO
 from pipette import Pipette
 
 
-debug = True
+debug = False
 verbose = False
 
 class Head:

@@ -4,7 +4,7 @@ from file_io import FileIO
 import script_keeper as sk
 from robot_protocol import RobotProtocol
 
-debug = True
+debug = False
 verbose = False
 
 class Subscriber():

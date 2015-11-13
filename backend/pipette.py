@@ -4,7 +4,7 @@ from tool import Tool
 from file_io import FileIO
 
 
-debug = True
+debug = False
 verbose = False
 
 class Pipette(Tool):
