@@ -5,7 +5,7 @@ import script_keeper as sk
 from robot_protocol import RobotProtocol
 
 debug = True
-verbose = True
+verbose = False
 
 class Subscriber():
     """Subscribes to messages from WAMP Router on 'com.opentrons.browser_to_robot' and dispatches commands according to the :obj:`dispatcher` dictionary.

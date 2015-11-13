@@ -5,7 +5,7 @@ from file_io import FileIO
 
 
 debug = True
-verbose = True
+verbose = False
 
 class Pipette(Tool):
     """Representation of a pipette on the robot head

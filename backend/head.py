@@ -8,7 +8,7 @@ from pipette import Pipette
 
 
 debug = True
-verbose = True
+verbose = False
 
 class Head:
     """A representation of the robot head
