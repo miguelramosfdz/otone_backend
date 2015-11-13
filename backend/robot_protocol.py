@@ -15,8 +15,8 @@ class RobotProtocol:
 		# 0. Added pipette calibrations run through for highestSpot
 		self.highestSpot = 500
 
-		FileIO.log('pipette_calibrations... ',type(pipette_calibrations))
-		FileIO.log(pipette_calibrations)
+		#FileIO.log('pipette_calibrations... ',type(pipette_calibrations))
+		#FileIO.log(pipette_calibrations)
 		self.pipette_calibrations = pipette_calibrations
 		for axis_name, axis_values in self.pipette_calibrations.items():
 			if 'theContainers' in list(axis_values):
@@ -40,21 +40,21 @@ class RobotProtocol:
 
 		self._deck = dict()
 
-		FileIO.log('protocol... ',type(protocol))
-		FileIO.log(protocol)
+		#FileIO.log('protocol... ',type(protocol))
+		#FileIO.log(protocol)
 
-		FileIO.log('containers... ',type(containers))
-		FileIO.log(list(containers['containers']))
-		FileIO.log('self.labware_from_db... ',type(self.labware_from_db))
-		FileIO.log(list(self.labware_from_db))
+		#FileIO.log('containers... ',type(containers))
+		#FileIO.log(list(containers['containers']))
+		#FileIO.log('self.labware_from_db... ',type(self.labware_from_db))
+		#FileIO.log(list(self.labware_from_db))
 
 
 
 	def process(self):
 		for variableName, variableValue in self.protocol['deck'].items():
 			_container = dict()
-			FileIO.log('variableValue... ',type(variableValue))
-			FileIO.log(variableValue)
+			#FileIO.log('variableValue... ',type(variableValue))
+			#FileIO.log(variableValue)
 			labwareName = variableValue['labware']
 			_container['labware'] = labwareName
 		
@@ -75,7 +75,7 @@ class RobotProtocol:
 
 		for ingredientName, ingredientValue in self.protocol['ingredients'].items():
 			ingredientPartsList = ingredientValue
-			FileIO.log('calling map & ingredientPartList/Update...')
+			#FileIO.log('calling map & ingredientPartList/Update...')
 			map(lambda self, ingredientPart: self.ingredientPartUpdate(ingredientPart),ingredientPartsList)
 
 		
@@ -142,13 +142,13 @@ class RobotProtocol:
 
 					if labwareName in self.labware_from_db:
 						_locations = self.labware_from_db[labwareName]['locations']
-						FileIO.log(' *** locations ***')
+						#FileIO.log(' *** locations ***')
 						#FileIO.log(_locations)
 						l_locations = list(_locations)
-						FileIO.log(l_locations)
+						#FileIO.log(l_locations)
 						l_locations.sort(key=self.sortIndex)
-						FileIO.log('after sort...')
-						FileIO.log(l_locations)
+						#FileIO.log('after sort...')
+						#FileIO.log(l_locations)
 						#locs = list(_locations).sort(key=self.sortIndex)
 						#FileIO.log('locs')
 						#FileIO.log(locs)
@@ -197,8 +197,8 @@ class RobotProtocol:
 
 			for instruction in self._instructions:
 				currentPipette = self._pipettes[instruction['tool']]
-				FileIO.log('currentPipette... ',type(currentPipette))
-				FileIO.log(currentPipette)
+				#FileIO.log('currentPipette... ',type(currentPipette))
+				#FileIO.log(currentPipette)
 				if currentPipette is not None:
 					newInstruction = dict()
 					newInstruction['tool'] = currentPipette['tool']
@@ -221,27 +221,27 @@ class RobotProtocol:
 						elif 'mix' in list(g):
 							newGroup = self.mix(self._deck, pipette, g['mix'])
 							
-						FileIO.log('newGroup... ',type(newGroup))
-						FileIO.log(newGroup)
+						#FileIO.log('newGroup... ',type(newGroup))
+						#FileIO.log(newGroup)
 						if newGroup is not None:
 							newInstruction['groups'].append(newGroup)
-							FileIO.log('newInstruction[groups]... ',type(newInstruction['groups']))
-							FileIO.log(newInstruction['groups'])
+							#FileIO.log('newInstruction[groups]... ',type(newInstruction['groups']))
+							#FileIO.log(newInstruction['groups'])
 				self.createdInstructions.append(newInstruction)
-				FileIO.log('self.createdInstructions... ',type(self.createdInstructions))
-				FileIO.log(self.createdInstructions)
+				#FileIO.log('self.createdInstructions... ',type(self.createdInstructions))
+				#FileIO.log(self.createdInstructions)
 
 		return self.createdInstructions
 
 	def sortIndex(self, index):
-		FileIO.log('sortIndex called')
+		#FileIO.log('sortIndex called')
 		integer = ord(index[:1])*pow(10,len(index[1:]))
 		decimal = int(index[1:])#/pow(10,len(index[1:]))
 		return integer+decimal
 
 
 	def createLiquidLocation(self, location):
-		FileIO.log('createLiquidLocation called')
+		#FileIO.log('createLiquidLocation called')
 		location['current-liquid-volume'] = 0
 		location['current-liquid-offset'] = 0
 		location['updateVolume'] = lambda location, ingredientVolume: self.updateVolume(location, ingredientVolume)
@@ -249,7 +249,7 @@ class RobotProtocol:
 
 	def updateVolume(self, location, ingredientVolume):
 		"""turned into lambda for location dict"""
-		FileIO.log('updateVolume called')
+		#FileIO.log('updateVolume called')
 		location['current-liquid-volume'] += ingredientVolume
 		heightRatio = location['current-liquid-volume'] / location['total-liquid-volume']
 		if isinstance(heightRatio,(int,float,complex)):
@@ -257,7 +257,7 @@ class RobotProtocol:
 
 
 	def ingredientPartUpdate(self, ingredientPart):
-		FileIO.log('ingredientPartUpdate called')
+		#FileIO.log('ingredientPartUpdate called')
 		if 'container' in list(ingredientPart) and ingredientPart['container'] in list(self._deck):
 			allLocations = self._deck[ingredientPart.container]['locations']
 			if 'location' in list(ingredientPart) and ingredientPart.location in list(allLocations):
@@ -296,13 +296,13 @@ class RobotProtocol:
 				rackValue['dirty-tips'] = []
 
 			if len(list(myRacks)) > 0:
-				FileIO.log('myRacks... ',type(myRacks))
-				FileIO.log(myRacks)
-				FileIO.log('myRacks.keys()...',type(myRacks.keys()))
-				FileIO.log(myRacks.keys())
-				FileIO.log('myRacks clean-tips')
-				FileIO.log('myRacks[list(myRacks)[0]]... ',type(myRacks[list(myRacks)[0]]))
-				FileIO.log(myRacks[list(myRacks)[0]])
+				#FileIO.log('myRacks... ',type(myRacks))
+				#FileIO.log(myRacks)
+				#FileIO.log('myRacks.keys()...',type(myRacks.keys()))
+				#FileIO.log(myRacks.keys())
+				#FileIO.log('myRacks clean-tips')
+				#FileIO.log('myRacks[list(myRacks)[0]]... ',type(myRacks[list(myRacks)[0]]))
+				#FileIO.log(myRacks[list(myRacks)[0]])
 				newTipLocation = myRacks[list(myRacks)[0]]['clean-tips'][0:1][0] #.splice(0,1)[0]
 				newTipContainerName = myRacks[list(myRacks)[0]]['container']
 				myRacks[list(myRacks)[0]]['dirty-tips'].append(newTipLocation)
@@ -367,7 +367,7 @@ class RobotProtocol:
 
 
 	def transfer(self, theDeck, theTool, transferList):
-		FileIO.log('transfer called')
+		#FileIO.log('transfer called')
 		createdGroup = dict({
 			'command':'pipette',
 			'axis':theTool['axis'],
@@ -384,8 +384,8 @@ class RobotProtocol:
 
 			fromParams['volume'] = volume * -1
 			toParams['volume'] = volume
-			FileIO.log('thisTransferParams... ',type(thisTransferParams))
-			FileIO.log(thisTransferParams)
+			#FileIO.log('thisTransferParams... ',type(thisTransferParams))
+			#FileIO.log(thisTransferParams)
 
 			if 'extra-pull' in list(thisTransferParams):
 				fromParams['extra-pull'] = thisTransferParams['extra-pull']
@@ -496,8 +496,8 @@ class RobotProtocol:
 		containerName = thisParams['container']
 		if containerName in list(theDeck) and 'locations' in list(theDeck[containerName]):
 			locationPos = theDeck[containerName]['locations'][thisParams['location']]
-			FileIO.log('locationPos... ',type(locationPos))
-			FileIO.log(locationPos)
+			#FileIO.log('locationPos... ',type(locationPos))
+			#FileIO.log(locationPos)
 			if 'updateVolume' in list(locationPos):
 				locationPos['updateVolume'](locationPos, float(thisParams['volume']))
 			specifiedOffset = 0
@@ -513,8 +513,8 @@ class RobotProtocol:
 
 			#if arriveDepth < bottomLimit:
 			#	arriveDepth = bottomLimit
-			FileIO.log('theTool... ',type(theTool))
-			FileIO.log(theTool)
+			#FileIO.log('theTool... ',type(theTool))
+			#FileIO.log(theTool)
 			moveList.append(dict({'speed':theTool['down-plunger-speed']}))
 
 			rainbowHeight = self.highestSpot - 5
