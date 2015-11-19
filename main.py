@@ -34,7 +34,7 @@ def landing_page():
 	session['session_id'] = uid
 
 	session_id = session['session_id']
-	print 'session_id from landing_page:', session_id
+	print('session_id from landing_page:', session_id)
 	
 	# return render_template('body.html', filename='[empty]')	#modified rbw 8/26/15
 	return render_template('body.html', filename='[empty]', savedFile=0, loadedFile=0)
