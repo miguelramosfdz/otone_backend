@@ -13,9 +13,4 @@ workers:
       paths:
         /: {directory:  "../../otone_frontend/web", type: static}
         ws: {type: "websocket"}
-    - type: web
-      endpoint: {port: 8080, type: tcp}
-      paths:
-        /: {type: "wsgi", module: "main", object: "app"}
-        ws: {type: "websocket"}
 
