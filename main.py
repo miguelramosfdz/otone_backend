@@ -7,7 +7,6 @@ from jinja2 import Environment, PackageLoader, FileSystemLoader
 from collections import OrderedDict
 import os, json
 import uuid
-from protocol.protocol import Protocol
 
 
 # CONFIG ===================================================================================
