@@ -37,3 +37,7 @@ def landing_page():
 	
 	# return render_template('body.html', filename='[empty]')	#modified rbw 8/26/15
 	return render_template('body.html', filename='[empty]', savedFile=0, loadedFile=0)
+
+
+if __name__ == '__main__':
+	app.run(debug=True,host= '0.0.0.0')
