@@ -1,19 +1,68 @@
 <!doctype html>
 
 <html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <link rel="icon" type="image/png" href="/static/images/favicon.png">
+        <title>OT.One</title>
+        <link rel="stylesheet" href="/static/main.css">
+    
+        <script type="text/javascript" src="/static/js/communication.js"></script>
+        <script type="text/javascript" src="/static/js/main.js"></script>
+    </head>
 
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags
-
-    <link rel="icon" type="image/png" href="/static/images/favicon.png">-->
-
-    <title>OT.One</title>
-
-
-	</head>
 	<body>
+        <!-- EDIT IN PLACE SCRIPTS -->
+        <script type="text/javascript" src="/static/js/sugar.js"></script>
+        <script type="text/javascript" src="/static/js/modals/in-place.js"></script>
+
+        <header>
+            <div class="wrapper">
+                <h1>
+                    <a href="https://github.com/opentrons" target="_blank">
+                        <img src="/static/images/logo.png">
+                    </a>
+                </h1>
+                <nav>
+                    <ul>
+                        <li>
+                            <a href="https://github.com/opentrons" target="_blank">Version:
+                                <span id="version"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://mix.bio" target="_blank">Mix.Bio</a>
+                        </li>
+                        <li>
+                            <a href="https://editor.mix.bio" target="_blank">Protocol Editor</a>
+                        </li>
+                    </ul>
+                </nav>
+                <h2>
+                    <a href="#">Status:
+                        <span id="status"></span>
+                    </a>
+                </h2>
+            </div>
+        </header>
+        <section id="input">
+            <form enctype="multipart/form0data" action="" method="get">
+                <button type="submit">Process</button>
+                <input type="file" accept=".json" name="protocol_file" onchange="load_protocol_file(this);"></input>
+            </form>
+        </section>
+        <section id="quick_buttons">
+        </sections>
+        <section id="jog">
+        </section>
+        <section id="main">
+            <!-- main window tabs go here, programmatically loaded -->
+            <ul id="main-nav-tabs" class="nav nav-tabs">
+
+            </ul>
+        </section>
 	</body>
 </html>

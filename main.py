@@ -14,7 +14,7 @@ import uuid
 app = Flask(__name__) #APPLICATION
 app.config.from_object(__name__)
 
-app.secret_key = "protocol_editor" # encryption key for session variable, security isn't really an issue
+app.secret_key = "opentrons" # encryption key for session variable, security isn't really an issue
 
 # configure Jinja template engine
 app.jinja_env.add_extension('jinja2.ext.do')
