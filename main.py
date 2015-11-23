@@ -30,7 +30,7 @@ templates_js = []
 templates_sass_partials = []
 
 def collect_templates():
-	temp_path = os.path.dirname(main.__file__)
+	temp_path = os.path.dirname(self.__file__)
 	temp_folder = os.path.join(temp_path, 'templates', 'modules')
 	for f in os.listdir(temp_folder):
 		t_path = os.path.join(temp_folder, f)
