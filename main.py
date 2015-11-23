@@ -23,6 +23,33 @@ app.jinja_env.trim_blocks = True
 
 cache = Cache(app, config={'CACHE_TYPE': 'simple'}) # initialize cache to store objects
 
+# NEW STUFF ================================================================================
+
+templates_html = []
+templates_js = []
+templates_sass_partials = []
+
+def collect_templates():
+	temp_path = os.path.dirname(otone_backend.__file__)
+	temp_folder = os.path.join(temp_path, 'templates', 'modules')
+	for f in os.listdir(temp_folder):
+		t_path = os.path.join(temp_folder, f)
+		if os.path.isdir(t_path):
+			print('tempalte folder name',f)
+			process_template_folder(t_path)
+
+
+def process_template_folder(template_path):
+	for f in os.listdir(template_path):
+		t_path = os.path.join(template_path, f)
+		print('t_path: ',t_path)
+		if os.path.isdir(t_path) and t_path.endswith('sass'):
+			print('sass folder found')
+		elif os.path.isdir(t_path) and t_path.endswith('html'):
+			print('html folder found')
+		elif os.path.isdir(t_path) and t_path.endswith('json'):
+			print('json folder found')
+
 
 # ROUTES ===================================================================================
 

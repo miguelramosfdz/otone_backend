@@ -54,9 +54,56 @@
                 <input type="file" accept=".json" name="protocol_file" onchange="load_protocol_file(this);"></input>
             </form>
         </section>
-        <section id="quick_buttons">
-        </sections>
+        <section id="player">
+            <a class="" href="javascript:void(0);" onclick="stop();">STOP</a>
+            <a class="" href="javascript:void(0);" onclick="resume();">Resume</a>
+            <a class="" href="javascript:void(0);" onclick="pause();">Pause</a>
+            <a class="" href="javascript:void(0);" onclick="erase();">Erase</a>
+        </section>
+        
         <section id="jog">
+            <section id="quick_buttons">
+                <a class="item-select active" href="javascript:void(0);" onclick="stop();">STOP</a>
+                <span>HOME:</span>
+                <a class="item-select active" href="javascript:void(0);" onclick="home();">ALL</a>
+                <a class="item-select active" href="javascript:void(0);" onclick="home('x');">ALL</a>
+                <a class="item-select active" href="javascript:void(0);" onclick="home('y');">ALL</a>
+                <a class="item-select active" href="javascript:void(0);" onclick="home('z');">ALL</a>
+                <a class="item-select active" href="javascript:void(0);" onclick="home('a');">ALL</a>
+                <a class="item-select active" href="javascript:void(0);" onclick="home('b');">ALL</a>
+            </section>
+            <section id="jog_xyz">
+                <fieldset>
+                    <legend class="UI-Title">Jog Axis (X-Y-Z)</legend>
+                    <div>
+                        <a class="" href="javascript:void(0);" onclick="step('y',-1);">
+                            <span>&#8593;</span>
+                        </a>
+                        <a class="" href="javascript:void(0);" onclick="step('x',-1);">
+                            <span>&#8592;</span>
+                        </a>
+                        <a class="" href="javascript:void(0);" onclick="step('x',1);">
+                            <span>&#8594;</span>
+                        </a>
+                        <a class="" href="javascript:void(0);" onclick="step('y',1);">
+                            <span>&#8595;</span>
+                        </a>
+                    </div>
+                    <div>
+                        <a class="" href="javascript:void(0);" onclick="step('z',-1);">
+                            <span>&#8593;</span>
+                        </a>
+                        <a class="" href="javascript:void(0);" onclick="step('z',1);">
+                            <span>&#8595;</span>
+                        </a>
+                    </div>
+                    <div>
+                        <span>X:<span id="position_x"></span></span>
+                        <span>Y:<span id="position_y"></span></span>
+                        <span>Z:<span id="position_z"></span></span>
+                    </div>
+                </fieldset>
+            </section>
         </section>
         <section id="main">
             <!-- main window tabs go here, programmatically loaded -->
