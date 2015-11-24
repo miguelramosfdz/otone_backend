@@ -2,11 +2,15 @@
 
 {% block content %}
 
-
+<div id='test-div-1'>
+START
+</div>
 {% for tt in templates_names %}
 {% include tt %}
 {{tt}}
 {% endfor %}
-
+<div id='test-div-2'>
+FINISH
+</div>
 
 {% endblock %}
