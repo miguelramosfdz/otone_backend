@@ -1,16 +1,16 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-
+<div  class="block">
 <div id='test-div-1'>
-START
+<h1>START</h1>
 </div>
 {% for tt in templates_names %}
 {% include tt %}
 {{tt}}
 {% endfor %}
 <div id='test-div-2'>
-FINISH
+<h1>FINISH</h1>
 </div>
-
+</div>
 {% endblock %}
