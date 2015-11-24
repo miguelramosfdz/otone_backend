@@ -72,6 +72,7 @@ def process_template_folder(template_path):
 			print('sass folder found')
 		elif os.path.isdir(t_path) and t_path.endswith('html'):
 			print('html folder found')
+			templates_paths.append(t_path)
 			process_html_folder(t_path)
 		elif os.path.isdir(t_path) and t_path.endswith('json'):
 			print('json folder found')
@@ -86,7 +87,6 @@ def process_html_folder(html_path):
 	for f in os.listdir(html_path):
 		full_path = os.path.join(html_path, f)
 		if os.path.isfile(full_path) and full_path.endswith('.html'):
-			templates_paths.append(full_path)
 			templates_names.append(f)
 
 

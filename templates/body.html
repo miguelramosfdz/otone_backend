@@ -7,10 +7,11 @@
 </div>
 {{ templates_names }}
 {% for tt in templates_names %}
-{% include tt %}
+{# % include tt % #}
 <p>Something was found here...</p>
 {{ tt }}
 {% endfor %}
+{% include '../templates/modules/containers_library/html/test.http'}
 <div id='test-div-2'>
 <h1>FINISH</h1>
 </div>
