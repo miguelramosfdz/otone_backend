@@ -33,6 +33,8 @@ templates_html = []
 templates_json = []
 templates_sass = []
 
+prefix = 'templates/'
+
 #assets = Enviro(app)
 #assets.url = app.static_url_path
 #sassy = Bundle('../templates/modules/containers_library/sass/test.sass', filters='sass', output='css_all.css')
@@ -87,7 +89,8 @@ def process_html_folder(html_path):
 	for f in os.listdir(html_path):
 		full_relative_path = os.path.join(html_path, f)
 		if os.path.isfile(full_relative_path) and full_relative_path.endswith('.html'):
-			templates_html.append(full_relative_path)
+			if full_relative_path.startswith(prefix):
+				templates_html.append(full_relative_path[len(prefix):])
 
 
 def process_json_folder(json_path):
