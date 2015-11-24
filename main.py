@@ -112,7 +112,7 @@ def landing_page():
 	# return render_template('body.html', filename='[empty]')	#modified rbw 8/26/15
 	print('templates_names: ',templates_names)
 	print('templates_paths: ',templates_paths)
-	return render_template('body.html', filename='[empty]', savedFile=0, loadedFile=0)
+	return render_template('body.html', templates_names=templates_names)
 
 
 if __name__ == '__main__':
