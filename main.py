@@ -51,6 +51,10 @@ templates_sass_partials = []
 def collect_templates():
 	temp_path = os.path.dirname(os.path.realpath(__file__))
 	temp_folder = os.path.join(temp_path, 'templates', 'modules')
+	templates_paths = []
+	templates_names = []
+	templates_json = []
+	templates_sass_partials = []
 	for f in os.listdir(temp_folder):
 		t_path = os.path.join(temp_folder, f)
 		if os.path.isdir(t_path):
@@ -102,11 +106,6 @@ def landing_page():
 
 	session_id = session['session_id']
 	print('session_id from landing_page:', session_id)
-
-	templates_paths = []
-	templates_names = []
-	templates_json = []
-	templates_sass_partials = []
 	
 	collect_templates()
 	
