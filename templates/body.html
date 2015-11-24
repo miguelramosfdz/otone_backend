@@ -9,9 +9,9 @@
 {% for tt in templates_names %}
 {# % include tt % #}
 <p>Something was found here...</p>
-{{ tt }}
+{% list_templates() %}
 {% endfor %}
-{% include '../templates/modules/containers_library/html/test.html' %}
+{# % include '../templates/modules/containers_library/html/test.html' % #}
 <div id='test-div-2'>
 <h1>FINISH</h1>
 </div>
