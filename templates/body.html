@@ -4,7 +4,8 @@
 
 
 {% for tt in templates_names %}
-{% include tt %}
+{% import tt %}
+{{tt}}
 {% endfor %}
 
 

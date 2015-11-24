@@ -103,8 +103,12 @@ def landing_page():
 	session_id = session['session_id']
 	print('session_id from landing_page:', session_id)
 
+	templates_paths = []
+	templates_names = []
+	templates_json = []
+	templates_sass_partials = []
+	
 	collect_templates()
-
 	
 	# return render_template('body.html', filename='[empty]')	#modified rbw 8/26/15
 	print('templates_names: ',templates_names)
