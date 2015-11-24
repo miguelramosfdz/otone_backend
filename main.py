@@ -85,9 +85,8 @@ def process_sass_folder(sass_path):
 def process_html_folder(html_path):
 	for f in os.listdir(html_path):
 		full_path = os.path.join(html_path, f)
-
 		if os.path.isfile(full_path) and full_path.endswith('.html'):
-			templates_paths.append(html_path)
+			templates_paths.append(full_path)
 			templates_names.append(f)
 
 
