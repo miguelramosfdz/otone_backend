@@ -2,4 +2,10 @@
 
 {% block content %}
 
+
+{% for tt in templates_names %}
+{% include tt %}
+{% endfor %}
+
+
 {% endblock %}
