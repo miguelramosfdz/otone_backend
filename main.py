@@ -54,7 +54,7 @@ def collect_templates():
 	for f in os.listdir(temp_folder):
 		t_path = os.path.join(temp_folder, f)
 		if os.path.isdir(t_path):
-			print('tempalte folder name',f)
+			print('template folder name',f)
 			process_template_folder(t_path)
 	loader = jinja2.FileSystemLoader(templates_paths)
 	my_loader = jinja2.ChoiceLoader([app.jinja_loader,loader])
@@ -68,6 +68,7 @@ def process_template_folder(template_path):
 			print('sass folder found')
 		elif os.path.isdir(t_path) and t_path.endswith('html'):
 			print('html folder found')
+			process_html_folder(t_path)
 		elif os.path.isdir(t_path) and t_path.endswith('json'):
 			print('json folder found')
 
@@ -80,6 +81,7 @@ def process_sass_folder(sass_path):
 def process_html_folder(html_path):
 	for f in os.listdir(html_path):
 		full_path = os.path.join(html_path, f)
+
 		if os.path.isfile(full_path) and full_path.endswith('.html'):
 			templates_paths.append(html_path)
 			templates_names.append(f)
@@ -106,6 +108,7 @@ def landing_page():
 	
 	# return render_template('body.html', filename='[empty]')	#modified rbw 8/26/15
 	print('templates_names: ',templates_names)
+	print('templates_paths: ',templates_paths)
 	return render_template('body.html', filename='[empty]', savedFile=0, loadedFile=0)
 
 
