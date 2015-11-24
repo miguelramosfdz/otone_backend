@@ -2,8 +2,12 @@
 
 from flask import Flask, request, session, jsonify, redirect, url_for, abort, render_template, flash, Response, make_response
 from flask.ext.cache import Cache
+#from flask.ext.assets import Environment as Enviro
+#from flask.ext.assets import Bundle
+#from flask.ext.scss import Scss
 
-from jinja2 import Environment, PackageLoader, FileSystemLoader
+#from jinja2 import Environment, PackageLoader, FileSystemLoader
+import jinja2
 from collections import OrderedDict
 import os, json
 import uuid
@@ -25,9 +29,24 @@ cache = Cache(app, config={'CACHE_TYPE': 'simple'}) # initialize cache to store 
 
 # NEW STUFF ================================================================================
 
-templates_html = []
-templates_js = []
+templates_paths = []
+templates_names = []
+templates_json = []
 templates_sass_partials = []
+
+#assets = Enviro(app)
+#assets.url = app.static_url_path
+#sassy = Bundle('../templates/modules/containers_library/sass/test.sass', filters='sass', output='css_all.css')
+#assets.register('css_all',sassy)
+#
+# {% assets "css_all" %}
+# <link type="stylesheet" type="text/css" href="{{ ASSET_URL }}">
+# {% endassets %}
+
+# Scass(app, static_dir='static', asset_dir='templates', load_paths=[
+#	''
+#	])
+
 
 def collect_templates():
 	temp_path = os.path.dirname(os.path.realpath(__file__))
@@ -37,6 +56,8 @@ def collect_templates():
 		if os.path.isdir(t_path):
 			print('tempalte folder name',f)
 			process_template_folder(t_path)
+	loader = jinja2.FileSystemLoader(templates_paths)
+	my_loader = jinja2.ChoiceLoader([app.jinja_loader,loader])
 
 
 def process_template_folder(template_path):
@@ -51,6 +72,24 @@ def process_template_folder(template_path):
 			print('json folder found')
 
 
+def process_sass_folder(sass_path):
+	for f in os.listdir(sass_path):
+		pass
+
+
+def process_html_folder(html_path):
+	for f in os.listdir(html_path):
+		full_path = os.path.join(html_path, f)
+		if os.path.isfile(full_path) and full_path.endswith('.html'):
+			templates_paths.append(html_path)
+			templates_names.append(f)
+
+
+def process_json_folder(json_path):
+	pass
+
+
+
 # ROUTES ===================================================================================
 
 @app.route('/')
@@ -63,8 +102,10 @@ def landing_page():
 	print('session_id from landing_page:', session_id)
 
 	collect_templates()
+
 	
 	# return render_template('body.html', filename='[empty]')	#modified rbw 8/26/15
+	print('templates_names: ',templates_names)
 	return render_template('body.html', filename='[empty]', savedFile=0, loadedFile=0)
 
 
