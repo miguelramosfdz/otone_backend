@@ -29,10 +29,9 @@ cache = Cache(app, config={'CACHE_TYPE': 'simple'}) # initialize cache to store 
 
 # NEW STUFF ================================================================================
 
-templates_paths = []
-templates_names = []
+templates_html = []
 templates_json = []
-templates_sass_partials = []
+templates_sass = []
 
 #assets = Enviro(app)
 #assets.url = app.static_url_path
@@ -49,19 +48,21 @@ templates_sass_partials = []
 
 
 def collect_templates():
-	temp_path = os.path.dirname(os.path.realpath(__file__))
+	temp_path = os.path.dirname(__file__)
+	#os.path.realpath(__file__))
 	temp_folder = os.path.join(temp_path, 'templates', 'modules')
-	templates_paths = []
-	templates_names = []
+	templates_html = []
 	templates_json = []
-	templates_sass_partials = []
+	templates_sass = []
 	for f in os.listdir(temp_folder):
 		t_path = os.path.join(temp_folder, f)
 		if os.path.isdir(t_path):
 			print('template folder name',f)
 			process_template_folder(t_path)
-	loader = jinja2.FileSystemLoader(templates_paths)
-	my_loader = jinja2.ChoiceLoader([app.jinja_loader,loader])
+	# BY all sass/scss, html, and json files for modules being in templates, 
+	# they are already being loaded
+	#loader = jinja2.FileSystemLoader(templates_paths)
+	#my_loader = jinja2.ChoiceLoader([app.jinja_loader,loader])
 
 
 def process_template_folder(template_path):
@@ -72,7 +73,6 @@ def process_template_folder(template_path):
 			print('sass folder found')
 		elif os.path.isdir(t_path) and t_path.endswith('html'):
 			print('html folder found')
-			templates_paths.append(t_path)
 			process_html_folder(t_path)
 		elif os.path.isdir(t_path) and t_path.endswith('json'):
 			print('json folder found')
@@ -85,9 +85,9 @@ def process_sass_folder(sass_path):
 
 def process_html_folder(html_path):
 	for f in os.listdir(html_path):
-		full_path = os.path.join(html_path, f)
-		if os.path.isfile(full_path) and full_path.endswith('.html'):
-			templates_names.append(f)
+		full_relative_path = os.path.join(html_path, f)
+		if os.path.isfile(full_relative_path) and full_relative_path.endswith('.html'):
+			templates_html.append(f)
 
 
 def process_json_folder(json_path):
