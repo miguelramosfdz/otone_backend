@@ -87,7 +87,7 @@ def process_html_folder(html_path):
 	for f in os.listdir(html_path):
 		full_relative_path = os.path.join(html_path, f)
 		if os.path.isfile(full_relative_path) and full_relative_path.endswith('.html'):
-			templates_html.append(f)
+			templates_html.append(full_relative_path)
 
 
 def process_json_folder(json_path):
