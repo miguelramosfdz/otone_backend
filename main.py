@@ -78,6 +78,7 @@ def process_template_folder(tab_path):
 			process_html_folder(t_path)
 		elif os.path.isdir(t_path) and t_path.endswith('json'):
 			print('json folder found')
+			process_json_folder(t_path)
 		elif os.path.isdir(t_path) and t_path.endswith('js'):
 			print('js folder found')
 			process_js_folder(t_path)
