@@ -1,6 +1,6 @@
 
 {
-	'containers' : function (data) {
+	"containers" : "function (data) {
 		console.log('containers data: '+data);
-	}
+	}"
 }
