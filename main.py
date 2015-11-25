@@ -65,9 +65,6 @@ def collect_templates():
 			process_template_folder(t_path)
 	# BY all sass/scss, html, and json files for modules being in templates, 
 	# they are already being loaded
-	loader = jinja2.FileSystemLoader(tabs_template_paths)
-	my_loader = jinja2.ChoiceLoader([app.jinja_loader,loader])
-	app.jinja_loader = my_loader
 
 
 def process_template_folder(tab_path):
@@ -116,6 +113,11 @@ def landing_page():
 	
 	collect_templates()
 	
+	loader = jinja2.FileSystemLoader(tabs_template_paths)
+	my_loader = jinja2.ChoiceLoader([app.jinja_loader,loader])
+	app.jinja_loader = my_loader
+
+
 	# return render_template('body.html', filename='[empty]')	#modified rbw 8/26/15
 	print('tabs_template_paths: ',tabs_template_paths)
 	print('tabs_templates: ',tabs_templates)
