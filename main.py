@@ -31,6 +31,7 @@ cache = Cache(app, config={'CACHE_TYPE': 'simple'}) # initialize cache to store 
 
 tabs_templates = []
 tabs_template_paths = []
+tabs_template_names = []
 tabs_json = []
 tabs_sass = []
 
@@ -56,6 +57,7 @@ def collect_templates():
 	temp_folder = os.path.join(temp_path, 'tabs')
 	tabs_templates = []
 	tabs_template_paths = []
+	tabs_template_names = []
 	tabs_json = []
 	tabs_sass = []
 	for f in os.listdir(temp_folder):
@@ -63,8 +65,6 @@ def collect_templates():
 		if os.path.isdir(t_path):
 			print('template folder name',f)
 			process_template_folder(t_path)
-	# BY all sass/scss, html, and json files for modules being in templates, 
-	# they are already being loaded
 
 
 def process_template_folder(tab_path):
@@ -91,9 +91,7 @@ def process_html_folder(html_path):
 		full_relative_path = os.path.join(html_path, f)
 		if os.path.isfile(full_relative_path) and full_relative_path.endswith('.html'):
 			tabs_templates.append(f)
-			#if full_relative_path.startswith(prefix):
-				
-					#full_relative_path[len(prefix):])
+			tabs_template_names.append(f[:-len('.html')])
 
 
 def process_json_folder(json_path):
@@ -123,7 +121,7 @@ def landing_page():
 	print('tabs_template_paths: ',tabs_template_paths)
 	print('tabs_templates: ',tabs_templates)
 	print(app.jinja_env.list_templates())
-	return render_template('body.html', tabs_templates=tabs_templates)
+	return render_template('body.html', tabs_templates=tabs_templates, tabs_template_names=tabs_template_names)
 
 
 if __name__ == '__main__':
