@@ -29,6 +29,8 @@ cache = Cache(app, config={'CACHE_TYPE': 'simple'}) # initialize cache to store 
 
 # NEW STUFF ================================================================================
 
+directory = os.path.dirname(os.path.realpath(__file__))
+
 tabs_templates = []
 tabs_template_paths = []
 tabs_template_names = []
@@ -116,7 +118,7 @@ def process_js_folder(js_path):
 def get_entries_for_sockethandler(fname):
 	try:
 		in_file = None
-		in_file = open(fname, "r")
+		in_file = open(os.path.join(directory,fname), "r")
 		entry_dict = json.load(in_file,object_paris_hook=collections.OrderedDict)
 		print('entry_dict: ',json.dumps(entry_dict,sort_keys=True,indent=4,separators=(',',': ')))
 	except EnvironmentError as err:
