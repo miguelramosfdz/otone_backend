@@ -8,7 +8,7 @@ from flask.ext.cache import Cache
 
 #from jinja2 import Environment, PackageLoader, FileSystemLoader
 import jinja2
-from collections import OrderedDict
+import collections
 import os, json
 import uuid
 
