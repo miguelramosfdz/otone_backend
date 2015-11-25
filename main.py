@@ -114,6 +114,7 @@ def process_js_folder(js_path):
 
 
 def get_entries_for_sockethandler(fname):
+	entry_dict = dict()
 	try:
 		in_file = None
 		in_file = open(fname, "r")
