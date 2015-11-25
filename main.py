@@ -116,6 +116,7 @@ def landing_page():
 	collect_templates()
 	
 	# return render_template('body.html', filename='[empty]')	#modified rbw 8/26/15
+	print('tabs_template_paths: ',tabs_template_paths)
 	print('tabs_templates: ',tabs_templates)
 	print(app.jinja_env.list_templates())
 	return render_template('body.html', tabs_templates=tabs_templates)
