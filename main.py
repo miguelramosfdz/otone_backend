@@ -90,8 +90,9 @@ def process_html_folder(html_path):
 	for f in os.listdir(html_path):
 		full_relative_path = os.path.join(html_path, f)
 		if os.path.isfile(full_relative_path) and full_relative_path.endswith('.html'):
-			if full_relative_path.startswith(prefix):
-				tabs_templates.append(full_relative_path)
+			tabs_templates.append(f)
+			#if full_relative_path.startswith(prefix):
+				
 					#full_relative_path[len(prefix):])
 
 
