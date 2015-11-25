@@ -52,7 +52,7 @@ prefix = 'templates/'
 def collect_templates():
 	temp_path = os.path.dirname(__file__)
 	#os.path.realpath(__file__))
-	temp_folder = os.path.join(temp_path, 'templates', 'modules')
+	temp_folder = os.path.join(temp_path, 'tabs')
 	tabs_templates = []
 	tabs_template_paths = []
 	tabs_json = []
