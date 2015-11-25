@@ -29,9 +29,10 @@ cache = Cache(app, config={'CACHE_TYPE': 'simple'}) # initialize cache to store 
 
 # NEW STUFF ================================================================================
 
-templates_html = []
-templates_json = []
-templates_sass = []
+tabs_templates = []
+tabs_template_paths = []
+tabs_json = []
+tabs_sass = []
 
 prefix = 'templates/'
 
