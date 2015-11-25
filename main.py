@@ -67,6 +67,7 @@ def collect_templates():
 	# they are already being loaded
 	loader = jinja2.FileSystemLoader(tabs_template_paths)
 	my_loader = jinja2.ChoiceLoader([app.jinja_loader,loader])
+	app.jinja_loader = my_loader
 
 
 def process_template_folder(tab_path):
