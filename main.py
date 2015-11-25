@@ -97,7 +97,10 @@ def process_html_folder(html_path):
 
 
 def process_json_folder(json_path):
-	pass
+	for f in os.listdir(json_path):
+		full_relative_path = os.path.join(json_path, f)
+		if os.path.isfile(full_relative_path) and full_relative_path.endswith('.json'):
+			tabs_json.append(full_relative_path)
 
 
 def process_js_folder(js_path):
