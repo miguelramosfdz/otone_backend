@@ -121,10 +121,11 @@ def get_entries_for_sockethandler(fname):
 	try:
 		in_file = None
 		in_file = open(os.path.join(directory,fname),"r")
+		text_of_file = in_file.read().replace('\t','').replace('\n','')
 		print('the path: ',os.path.join(directory,fname))
-		print('the beast: ',json.load(in_file,strict=False))
+		#print('the beast: ',json.load(in_file,strict=False))
 			#,object_pairs_hook=OrderedDict))
-		entry_dict = json.load(in_file,strict=False)
+		entry_dict = json.loads(text_of_file,strict=False)
 			#,object_pairs_hook=OrderedDict)
 		print('entry_dict: ',json.dumps(entry_dict,sort_keys=True,indent=4,separators=(',',': ')))
 	except EnvironmentError as err:
