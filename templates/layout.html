@@ -123,7 +123,7 @@
         <section id="main">
             <!-- main window tabs go here, programmatically loaded -->
             <ul id="main-nav-tabs" class="nav nav-tabs">
-                {% for tt in tabs_template_names %}
+                {% for tt in tabs_folder_names %}
                 <li >
                     <a href="#" onclick=changeTab({{ tt }});>{{ tt }}</a>
                 </li>

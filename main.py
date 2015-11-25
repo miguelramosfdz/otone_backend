@@ -120,7 +120,7 @@ def landing_page():
 	print('tabs_templates: ',tabs_templates)
 	print('tabs_folder_names: ',tabs_folder_names)
 	print('templates: ',app.jinja_env.list_templates())
-	return render_template('body.html', tabs_templates=tabs_templates, tabs_template_names=tabs_template_names)
+	return render_template('body.html', tabs_templates=tabs_templates, tabs_template_names=tabs_template_names, tabs_folder_names=tabs_folder_names)
 
 
 if __name__ == '__main__':
