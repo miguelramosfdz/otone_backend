@@ -32,7 +32,6 @@ cache = Cache(app, config={'CACHE_TYPE': 'simple'}) # initialize cache to store 
 tabs_templates = []
 tabs_template_paths = []
 tabs_template_names = []
-wtf = []
 tabs_json = []
 tabs_sass = []
 
@@ -56,15 +55,10 @@ def collect_templates():
 	temp_path = os.path.dirname(__file__)
 	#os.path.realpath(__file__))
 	temp_folder = os.path.join(temp_path, 'tabs')
-	tabs_templates = []
-	tabs_template_paths = []
-	tabs_template_names = []
-	tabs_json = []
-	tabs_sass = []
 	for f in os.listdir(temp_folder):
 		t_path = os.path.join(temp_folder, f)
 		if os.path.isdir(t_path):
-			wtf.append(f)
+			tabs_folder_names.append(f)
 			print('template folder name',f)
 			process_template_folder(t_path)
 			
@@ -123,7 +117,7 @@ def landing_page():
 	# return render_template('body.html', filename='[empty]')	#modified rbw 8/26/15
 	print('tabs_template_paths: ',tabs_template_paths)
 	print('tabs_templates: ',tabs_templates)
-	print('tabs_folder_names: ',wtf)
+	print('tabs_folder_names: ',tabs_folder_names)
 	print('templates: ',app.jinja_env.list_templates())
 	return render_template('body.html', tabs_templates=tabs_templates, tabs_template_names=tabs_template_names)
 
