@@ -123,6 +123,11 @@
         <section id="main">
             <!-- main window tabs go here, programmatically loaded -->
             <ul id="main-nav-tabs" class="nav nav-tabs">
+                {% for tt in tabs_template_names %}
+                <li >
+                    <a href="#" onclick=changeTab({{ tt }});>{{ tt }}</a>
+                </li>
+                {% endfor %}
             </ul>
 
             {% block content %}{% endblock %}
