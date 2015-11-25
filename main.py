@@ -39,6 +39,8 @@ tabs_sass = []
 
 prefix = 'templates/'
 
+socketHandler = dict()
+
 #assets = Enviro(app)
 #assets.url = app.static_url_path
 #sassy = Bundle('../templates/modules/containers_library/sass/test.sass', filters='sass', output='css_all.css')
@@ -109,6 +111,39 @@ def process_js_folder(js_path):
 		full_relative_path = os.path.join(js_path, f)
 		if os.path.isfile(full_relative_path) and full_relative_path.endswith('.js'):
 			tabs_js.append(full_relative_path)
+
+
+def get_entries_for_sockethandler(fname):
+	try:
+		in_file = None
+		in_file = open(fname, "r")
+		entry_dict = json.load(in_file,object_paris_hook=collections.OrderedDict)
+	except EnvironmentError as err:
+		print('Error reading json file: ',err)
+		raise
+
+	finally:
+		if in_file is not None:
+			in_file.close()
+			return entry_dict
+		else:
+			return None
+
+
+def add_entry_to_sockethandler(entries_dict):
+	socketHandler.update(entries_dict)
+
+
+def generate_sockethandler():
+	t_dict = dict()
+	for j in tabs_json:
+		t_dict = get_entries_for_sockethandler(j)
+		add_entry_to_sockethandler(t_dict)
+	try:
+		sh_file = open('static/js/socketHandler.js',"w")
+		filetext = json.dumps(t_dict,sort_keys=True,indent=4,separators=(',',': '))
+		sh_file.write(filetext)
+
 
 
 # ROUTES ===================================================================================
