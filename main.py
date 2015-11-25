@@ -139,10 +139,11 @@ def generate_sockethandler():
 	t_dict = dict()
 	for j in tabs_json:
 		t_dict = get_entries_for_sockethandler(j)
+		print(json.dumps(t_dict,sort_keys=True,indent=4,separators=(',',': ')))
 		add_entry_to_sockethandler(t_dict)
 	
 	sh_file = open('static/js/socketHandler.js',"w")
-	filetext = json.dumps(t_dict,sort_keys=True,indent=4,separators=(',',': '))
+	filetext = json.dumps(socketHandler,sort_keys=True,indent=4,separators=(',',': '))
 	sh_file.write(filetext)
 	
 	if sh_file is not None:
