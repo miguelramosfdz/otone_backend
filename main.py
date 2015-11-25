@@ -67,7 +67,7 @@ def collect_templates():
 		if os.path.isdir(t_path):
 			print('template folder name',f)
 			process_template_folder(t_path)
-			tabs_folder_names.append(t_path)
+			tabs_folder_names.append(f)
 
 
 def process_template_folder(tab_path):
