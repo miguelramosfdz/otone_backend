@@ -143,6 +143,12 @@ def generate_sockethandler():
 		sh_file = open('static/js/socketHandler.js',"w")
 		filetext = json.dumps(t_dict,sort_keys=True,indent=4,separators=(',',': '))
 		sh_file.write(filetext)
+	except:
+		raise
+
+	finally:
+		if sh_file is not None:
+			sh_file.close()
 
 
 
