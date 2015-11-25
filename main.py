@@ -34,6 +34,7 @@ tabs_template_paths = []
 tabs_template_names = []
 tabs_folder_names = []
 tabs_json = []
+tabs_js = []
 tabs_sass = []
 
 prefix = 'templates/'
@@ -77,6 +78,9 @@ def process_template_folder(tab_path):
 			process_html_folder(t_path)
 		elif os.path.isdir(t_path) and t_path.endswith('json'):
 			print('json folder found')
+		elif os.path.isdir(t_path) and t_path.endswith('js'):
+			print('js folder found')
+			process_js_folder(t_path)
 
 
 def process_sass_folder(sass_path):
@@ -95,6 +99,12 @@ def process_html_folder(html_path):
 def process_json_folder(json_path):
 	pass
 
+
+def process_js_folder(js_path):
+	for f in os.listdir(js_path):
+		full_relative_path = os.path.join(js_path, f)
+		if os.path.isfile(full_relative_path) and full_relative_path.endswith('.js'):
+			tabs_js.append(full_relative_path)
 
 
 # ROUTES ===================================================================================
@@ -120,7 +130,8 @@ def landing_page():
 	print('tabs_templates: ',tabs_templates)
 	print('tabs_folder_names: ',tabs_folder_names)
 	print('templates: ',app.jinja_env.list_templates())
-	return render_template('body.html', tabs_templates=tabs_templates, tabs_template_names=tabs_template_names, tabs_folder_names=tabs_folder_names)
+	print('tabs_js: ',tabs_js)
+	return render_template('body.html', tabs_templates=tabs_templates, tabs_js=tabs_js, tabs_template_names=tabs_template_names, tabs_folder_names=tabs_folder_names)
 
 
 if __name__ == '__main__':
