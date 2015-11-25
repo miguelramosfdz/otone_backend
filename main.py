@@ -174,6 +174,7 @@ def landing_page():
 	print('templates: ',app.jinja_env.list_templates())
 	print('tabs_js: ',tabs_js)
 	print('tabs_json: ',tabs_json)
+	generate_sockethandler()
 	return render_template('body.html', tabs_templates=tabs_templates, tabs_js=tabs_js, tabs_template_names=tabs_template_names, tabs_folder_names=tabs_folder_names)
 
 
