@@ -53,9 +53,10 @@ def collect_templates():
 	temp_path = os.path.dirname(__file__)
 	#os.path.realpath(__file__))
 	temp_folder = os.path.join(temp_path, 'templates', 'modules')
-	templates_html = []
-	templates_json = []
-	templates_sass = []
+	tabs_templates = []
+	tabs_template_paths = []
+	tabs_json = []
+	tabs_sass = []
 	for f in os.listdir(temp_folder):
 		t_path = os.path.join(temp_folder, f)
 		if os.path.isdir(t_path):
@@ -63,18 +64,19 @@ def collect_templates():
 			process_template_folder(t_path)
 	# BY all sass/scss, html, and json files for modules being in templates, 
 	# they are already being loaded
-	#loader = jinja2.FileSystemLoader(templates_paths)
-	#my_loader = jinja2.ChoiceLoader([app.jinja_loader,loader])
+	loader = jinja2.FileSystemLoader(tabs_template_paths)
+	my_loader = jinja2.ChoiceLoader([app.jinja_loader,loader])
 
 
-def process_template_folder(template_path):
-	for f in os.listdir(template_path):
-		t_path = os.path.join(template_path, f)
+def process_template_folder(tab_path):
+	for f in os.listdir(tab_path):
+		t_path = os.path.join(tab_path, f)
 		print('t_path: ',t_path)
 		if os.path.isdir(t_path) and t_path.endswith('sass'):
 			print('sass folder found')
 		elif os.path.isdir(t_path) and t_path.endswith('html'):
 			print('html folder found')
+			tabs_template_paths.append(t_path)
 			process_html_folder(t_path)
 		elif os.path.isdir(t_path) and t_path.endswith('json'):
 			print('json folder found')
@@ -90,7 +92,8 @@ def process_html_folder(html_path):
 		full_relative_path = os.path.join(html_path, f)
 		if os.path.isfile(full_relative_path) and full_relative_path.endswith('.html'):
 			if full_relative_path.startswith(prefix):
-				templates_html.append(full_relative_path[len(prefix):])
+				tabs_templates.append(full_relative_path)
+					#full_relative_path[len(prefix):])
 
 
 def process_json_folder(json_path):
@@ -112,9 +115,9 @@ def landing_page():
 	collect_templates()
 	
 	# return render_template('body.html', filename='[empty]')	#modified rbw 8/26/15
-	print('templates_html: ',templates_html)
+	print('tabs_templates: ',tabs_templates)
 	print(app.jinja_env.list_templates())
-	return render_template('body.html', templates_names=templates_html)
+	return render_template('body.html', tabs_templates=tabs_templates)
 
 
 if __name__ == '__main__':
