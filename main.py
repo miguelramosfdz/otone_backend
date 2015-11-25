@@ -119,6 +119,7 @@ def get_entries_for_sockethandler(fname):
 	try:
 		in_file = None
 		in_file = open(os.path.join(directory,fname), "r")
+		print('the path: ',os.path.join(directory, fname))
 		entry_dict = json.load(in_file,object_paris_hook=collections.OrderedDict)
 		print('entry_dict: ',json.dumps(entry_dict,sort_keys=True,indent=4,separators=(',',': ')))
 	except EnvironmentError as err:
