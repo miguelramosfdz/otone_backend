@@ -114,11 +114,11 @@ def process_js_folder(js_path):
 
 
 def get_entries_for_sockethandler(fname):
-	entry_dict = dict()
 	try:
 		in_file = None
 		in_file = open(fname, "r")
 		entry_dict = json.load(in_file,object_paris_hook=collections.OrderedDict)
+		print('entry_dict: ',json.dumps(entry_dict,sort_keys=True,indent=4,separators=(',',': ')))
 	except EnvironmentError as err:
 		print('Error reading json file: ',err)
 		raise
@@ -139,7 +139,7 @@ def generate_sockethandler():
 	t_dict = dict()
 	for j in tabs_json:
 		t_dict = get_entries_for_sockethandler(j)
-		print(json.dumps(t_dict,sort_keys=True,indent=4,separators=(',',': ')))
+		print("t_dict: ",json.dumps(t_dict,sort_keys=True,indent=4,separators=(',',': ')))
 		add_entry_to_sockethandler(t_dict)
 	
 	sh_file = open('static/js/socketHandler.js',"w")
