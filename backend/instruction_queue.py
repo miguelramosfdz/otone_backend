@@ -64,7 +64,7 @@ class InstructionQueue:
 
                 def set_xyz_speed_to_3000():
                     if debug == True: FileIO.log('set_xyz_speed_to_3000 called')
-                    self.head.set_speed('xyz',3000)
+                    #self.head.set_speed('xyz',3000)
 
                 def set_a_speed_to_300():
                     if debug == True: FileIO.log('set_a_speed_to_300 called')
