@@ -112,6 +112,7 @@ class Pipette(Tool):
         should_home_axis = False
 
         for n in loc:
+            temploc[n] = loc[n] # just copy over other coordinates
             if n=='plunger':
                   #convert the relative thumb value to it's absolute coordinate
                   if loc[n]=='blowout':
@@ -129,7 +130,7 @@ class Pipette(Tool):
 
             # if there is a container specified, all XYZ values are
             #relative to self container's origin
-            elif n=='container':
+            if n=='container':
                 containerName = loc[n]
                 if(containerName in self.theContainers):
                     # save the container's coords
@@ -141,11 +142,10 @@ class Pipette(Tool):
                     }
                 else:
                     if debug == True: FileIO.log('Cannot find container ',containerName)
-            elif n == 'speed':
+            if n == 'speed':
                 temploc['axis'] = self.axis
                 temploc[n] = loc[n]
-            else:
-                temploc[n] = loc[n] # just copy over other coordinates
+
     
         # then add the container's position to self location
         # only if it has been specified
