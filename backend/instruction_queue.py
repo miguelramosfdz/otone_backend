@@ -1,5 +1,5 @@
 from file_io import FileIO
-import json, collections, asyncio
+import json, collections, asyncio, sys
 
 debug = False
 verbose = False
@@ -138,5 +138,12 @@ class InstructionQueue:
             for m in instruction['groups']:
                 this_group = m
                 if this_group['command'] == 'pipette':
-                    self.head.pipette(this_group)
+                    try:
+                        self.head.pipette(this_group)
+                    except:
+                        print('this_group: ')
+                        print(this_group)
+                        print()
+                        print(sys.exc_info())
+                        print()
                     
