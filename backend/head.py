@@ -7,7 +7,7 @@ from file_io import FileIO
 from pipette import Pipette
 
 
-debug = True
+debug = False
 verbose = True
 
 class Head:
@@ -253,7 +253,6 @@ class Head:
         #print('{} msg received in head, calling home on smoothie'.format(axis_dict))
         if debug == True:
             FileIO.log('head.home called, args: ',axis_dict)
-        
         self.smoothieAPI.home(axis_dict)
         
         
