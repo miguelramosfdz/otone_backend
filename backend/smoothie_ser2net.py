@@ -4,7 +4,7 @@ import asyncio, json, math
 from file_io import FileIO
 import script_keeper as sk
 
-debug = True
+debug = False
 io_debug = False
 verbose = False
 
