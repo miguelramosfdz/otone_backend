@@ -249,6 +249,7 @@ class Smoothie(object):
             FileIO.log('ok... self.already_trying: ',self.already_trying)
         if msg.find('{')>=0:
             msg = msg[msg.index('{'):]
+            data = {}
             try:
                 data = json.loads(msg)
             except:
