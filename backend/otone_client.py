@@ -123,8 +123,7 @@ class WampComponent(wamp.ApplicationSession):
             global client_status
             client_status = status
             self.publish('com.opentrons.robot_ready',True)
-            global head
-            head.send_current_protocol()
+            otone_client.head.send_current_protocol()
         
         FileIO.log('about to publish com.opentrons.robot_ready TRUE')
         self.publish('com.opentrons.robot_ready',True)
