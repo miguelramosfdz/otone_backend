@@ -93,9 +93,22 @@ prot_dict = FileIO.get_dict_from_json(fname_default_protocol)
 #Import and setup autobahn WAMP peer
 from autobahn.asyncio import wamp, websocket
 
+
+class GlobalVariables(Object):
+
+    def set_client_status(status):
+        if debug == True: FileIO.log('otone_client : WampComponent.set_client_status called')
+        client_status = status
+        print('client_status - set_client_status: ',client_status)
+        session_factory.session.publish('com.opentrons.robot_ready',True)
+        head.send_current_protocol()
+
+
 class WampComponent(wamp.ApplicationSession):
     """WAMP application session for OTOne (Overrides protocol.ApplicationSession - WAMP endpoint session)
     """
+    global head
+    global client_status
 
     def onConnect(self):
         """Callback fired when the transport this session will run over has been established.
@@ -119,19 +132,10 @@ class WampComponent(wamp.ApplicationSession):
         global client_status
         instantiate_objects()
         
-
-        def set_client_status(status):
-            if debug == True: FileIO.log('otone_client : WampComponent.set_client_status called')
-            global client_status
-            global head
-            client_status = status
-            print('client_status - set_client_status: ',client_status)
-            self.publish('com.opentrons.robot_ready',True)
-            head.send_current_protocol()
         
         FileIO.log('about to publish com.opentrons.robot_ready TRUE')
         self.publish('com.opentrons.robot_ready',True)
-        yield from self.subscribe(set_client_status, 'com.opentrons.browser_ready')
+        yield from self.subscribe(globule.set_client_status, 'com.opentrons.browser_ready')
         yield from self.subscribe(subscriber.dispatch_message, 'com.opentrons.browser_to_robot')
 
 
@@ -226,7 +230,7 @@ def instantiate_objects():
     subscriber.set_deck(deck)
     subscriber.set_head(head)
     subscriber.set_runner(runner)
-
+    globule = GlobalVariables()
 
 
     @asyncio.coroutine
