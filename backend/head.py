@@ -48,7 +48,7 @@ class Head:
         self.dir_par_par_path = os.path.dirname(self.dir_par_path)      
 
         self.load_pipette_values()
-        self.send_current_protocol()
+        
         
     def __str__(self):
         return "Head"
