@@ -127,6 +127,7 @@ class WampComponent(wamp.ApplicationSession):
         
         crossbar_status = True
         instantiate_objects()
+        globule = GlobalVariables()
         
         
         FileIO.log('about to publish com.opentrons.robot_ready TRUE')
@@ -226,7 +227,6 @@ def instantiate_objects():
     subscriber.set_deck(deck)
     subscriber.set_head(head)
     subscriber.set_runner(runner)
-    globule = GlobalVariables()
 
 
     @asyncio.coroutine
