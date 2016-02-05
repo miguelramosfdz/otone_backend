@@ -94,7 +94,7 @@ prot_dict = FileIO.get_dict_from_json(fname_default_protocol)
 from autobahn.asyncio import wamp, websocket
 
 
-class GlobalVariables(Object):
+class GlobalVariables():
 
     def set_client_status(status):
         if debug == True: FileIO.log('otone_client : WampComponent.set_client_status called')
@@ -107,8 +107,6 @@ class GlobalVariables(Object):
 class WampComponent(wamp.ApplicationSession):
     """WAMP application session for OTOne (Overrides protocol.ApplicationSession - WAMP endpoint session)
     """
-    global head
-    global client_status
 
     def onConnect(self):
         """Callback fired when the transport this session will run over has been established.
@@ -127,9 +125,7 @@ class WampComponent(wamp.ApplicationSession):
         if not self.factory._myAppSession:
             self.factory._myAppSession = self
         
-        crossbar_status = True    
-        global head
-        global client_status
+        crossbar_status = True
         instantiate_objects()
         
         
