@@ -46,6 +46,7 @@ class Subscriber():
     * 'reboot' : lambda self: self.reboot(),
     * 'shareinet': lambda self: self.loop.create_task(self.share_inet()),
     * 'restart' : lambda self: self.restart()
+    * 'save_protocl' : lambda self.save_protocol(data)
 
     :todo:
     - clean up inclusion of head and runner objects -> referenced by dispatch
@@ -176,8 +177,10 @@ class Subscriber():
         if debug == True: FileIO.log('subscriber.get_calibrations called')
         self.head.publish_calibrations()
 
+
     def get_containers(self):
         self.deck.publish_containers()
+
 
     def move_pipette(self, data):
         """Tell the :class:`head` to move a :class:`pipette` 
@@ -244,6 +247,11 @@ class Subscriber():
             if verbose == True: FileIO.log('\targs: ', data,'\n')
         if data and len(data):
             self.runner.insQueue.start_job (data, True)
+
+
+    def save_protocol(self, data):
+        self.head.save_protocol(data)
+
 
     def infinity(self, data):
         """Intermediate step to have :class:`protocol_runner` and :class:`the_queue` run a protocol to infinity and beyond
@@ -391,6 +399,7 @@ class Subscriber():
               'reboot' : lambda self: self.reboot(),
               'shareinet': lambda self: self.loop.create_task(self.share_inet()),
               'restart' : lambda self: self.restart(),
-              'containerDepthOverride': lambda self, data: self.container_depth_override(data)
+              'containerDepthOverride': lambda self, data: self.container_depth_override(data),
+              'save_protocol' : lambda self, data: self.save_protocol(data)
               }
     

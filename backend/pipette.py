@@ -261,7 +261,8 @@ class Pipette(Tool):
     def calibrate_container(self, containerName, coords):
         """Set the absolute location coordinates of a given container for this pipette
         """
-        if debug == True:
+        #debug
+        if True == True:
             FileIO.log('pipette.calibrate_container called')
             if verbose == True: FileIO.log('\ncontainerName: ',containerName,',\ncoords: ',coords,'\n')
         if containerName and self.theContainers[containerName] and coords:
@@ -302,7 +303,8 @@ class Pipette(Tool):
 
                 #js console.log('axis '+self.axis+ 'calibrated container '+containerName)
                 #js console.log(self.theContainers[containerName])
-            if debug == True: FileIO.log('\naxis ',self.axis, 'calibrated container ',containerName,'\n')
+            #debug
+            if True == True: FileIO.log('\naxis ',self.axis, 'calibrated container ',containerName,'\n')
 
 
     #from pipette.js

@@ -48,6 +48,7 @@ class Head:
         self.dir_par_par_path = os.path.dirname(self.dir_par_path)      
 
         self.load_pipette_values()
+        self.send_current_protocol()
         
     def __str__(self):
         return "Head"
@@ -446,7 +447,8 @@ class Head:
     def calibrate_container(self, pipette, container):   
         """Set the location of a container
         """
-        if debug == True: FileIO.log('head.calibrate_container called')
+        #debug
+        if True == True: FileIO.log('head.calibrate_container called')
         if pipette and self.PIPETTES[pipette]:     
             state = self.smoothieAPI.get_state()
             self.PIPETTES[pipette].calibrate_container(container,state)
@@ -488,7 +490,13 @@ class Head:
         filename = os.path.join(self.dir_par_par_path,'otone_data/pipette_calibrations.json')
 
         # save the pipette's values to a local file, to be loaded when the server restarts
-        FileIO.writeFile(filename,filetext,lambda: FileIO.onError('\t\tError saving the file:\r\r'))      
+        FileIO.writeFile(filename,filetext,lambda: FileIO.onError('\t\tError saving the file:\r\r'))
+
+
+    def save_protocol(self, data):
+        filename = os.path.join(self.dir_par_par_path,'otone_data/current_protocol.json')
+        filetext = json.dumps(data,sort_keys=True,indent=4,separators=(',',': '))
+        FileIO.writeFile(filename,filetext,lambda: FileIO.onError('\t\tError saving the file:\r\r'))
 
 
     #from planner.js
@@ -520,6 +528,12 @@ class Head:
         else:
             if debug == True: FileIO.log('head.load_pipette_values: No pipettes defined in PIPETTES')
             
+
+    def send_current_protocol(self):
+        current_protocol = FileIO.get_dict_from_json(os.path.join(self.dir_par_par_,'otone_data/current_protocol.json'))
+        self.pubber.send_message('current_protocol',current_protocol)
+
+
     #from planner.js
     # an array of new container names to be stored in each pipette
     #ToDo: this method may be redundant
@@ -561,18 +575,21 @@ class Head:
         :rtype: dictionary
         
         """
-        if debug == True: FileIO.log('head.get_deck called')
+        #debug
+        if True == True: FileIO.log('head.get_deck called')
         response = {}
         for axis in self.PIPETTES:
             response[axis] = {}
-            if debug == True: FileIO.log('self.PIPETTES[',axis,'].theContainers:\n\n',self.PIPETTES[axis].theContainers)
+            #debug
+            if True == True: FileIO.log('self.PIPETTES[',axis,'].theContainers:\n\n',self.PIPETTES[axis].theContainers)
             for name in self.PIPETTES[axis].theContainers:
-                if debug == True: FileIO.log('self.PIPETTES[',axis,'].theContainers[',name,']:\n\n',self.PIPETTES[axis].theContainers[name])
+                #debug
+                if True == True: FileIO.log('self.PIPETTES[',axis,'].theContainers[',name,']:\n\n',self.PIPETTES[axis].theContainers[name])
                 response[axis][name] = self.PIPETTES[axis].theContainers[name]
   
         self.save_pipette_values()
-
-        if debug == True: FileIO.log('head.get_deck response:\n\n',response)
+        #debug
+        if True == True: FileIO.log('head.get_deck response:\n\n',response)
         return response
 
 
@@ -656,7 +673,8 @@ class Head:
     def publish_calibrations(self):
         """Publish calibrations data
         """
-        if debug == True: FileIO.log('head.publish_calibrations called')
+        #debug
+        if True == True: FileIO.log('head.publish_calibrations called')
         self.pubber.send_message('containerLocations',self.get_deck())
         self.pubber.send_message('pipetteValues',self.get_pipettes())
         
