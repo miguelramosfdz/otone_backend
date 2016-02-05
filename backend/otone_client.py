@@ -192,7 +192,7 @@ def instantiate_objects():
 
 
     #instantiate the deck
-    global deck = Deck(def_start_protocol['deck'], publisher)
+    deck = Deck(def_start_protocol['deck'], publisher)
     if debug == True:
         FileIO.log('deck string: ', str(deck))
         FileIO.log('deck representation: ', repr(deck))
