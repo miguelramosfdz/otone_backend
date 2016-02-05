@@ -115,15 +115,19 @@ class WampComponent(wamp.ApplicationSession):
             self.factory._myAppSession = self
         
         crossbar_status = True    
+        global head
+        global client_status
         instantiate_objects()
         
-        
+
         def set_client_status(status):
             if debug == True: FileIO.log('otone_client : WampComponent.set_client_status called')
             global client_status
+            global head
             client_status = status
+            print('client_status - set_client_status: ',client_status)
             self.publish('com.opentrons.robot_ready',True)
-            otone_client.head.send_current_protocol()
+            head.send_current_protocol()
         
         FileIO.log('about to publish com.opentrons.robot_ready TRUE')
         self.publish('com.opentrons.robot_ready',True)
@@ -188,7 +192,7 @@ def instantiate_objects():
 
 
     #instantiate the deck
-    deck = Deck(def_start_protocol['deck'], publisher)
+    global deck = Deck(def_start_protocol['deck'], publisher)
     if debug == True:
         FileIO.log('deck string: ', str(deck))
         FileIO.log('deck representation: ', repr(deck))
