@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import asyncio, json, math
+import asyncio, json, math, copy
 from file_io import FileIO
 import script_keeper as sk
 
@@ -234,11 +234,11 @@ class Smoothie(object):
         """Handle lines of data from Smoothieboard
         """
         ok_print = False
-        if debug == True:
-            if self.old_msg != msg:
-                ok_print = True
-                FileIO.log('smoothie_ser2net.smoothie_handler called')
-                if verbose == True: FileIO.log('\n\tmsg: ',msg,'\n')
+        #if debug == True:
+        if self.old_msg != msg:
+            ok_print = True
+            #FileIO.log('smoothie_ser2net.smoothie_handler called')
+            if verbose == True: FileIO.log('\n\tmsg: ',msg,'\n')
         self.on_raw_data(msg)   #self
 
         #print('msg type: ',type(msg))
@@ -255,7 +255,8 @@ class Smoothie(object):
             didStateChange = False
             stillHoming = False
             if ok_print:
-                if debug == True and verbose == True: FileIO.log('smoothie_ser2net(1):\n\ttheState: ',self.theState,'\n')
+                #if debug == True and verbose == True: 
+                FileIO.log('smoothie_ser2net(1):\n\ttheState: ',self.theState,'\n')
             for key, value in data.items():
                 if key == "!!":
                     self.already_trying = False
@@ -314,7 +315,8 @@ class Smoothie(object):
 
             self.prevMsg = msg
             if ok_print:
-                if debug == True: FileIO.log('smoothie_ser2net:\n\tdidStateChange?: ',didStateChange,'\n')
+                #if debug == True: 
+                FileIO.log('smoothie_ser2net:\n\tdidStateChange?: ',didStateChange,'\n')
 
 
     def get_state(self):
@@ -351,7 +353,7 @@ class Smoothie(object):
 
         """
         if debug == True: FileIO.log('smoothie_ser2net.get_state called')
-        temp_state = dict(self.theState)
+        temp_state = copy.deepcopy(self.theState)#dict(self.theState)
         return temp_state
 
 
