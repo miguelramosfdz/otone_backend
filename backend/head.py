@@ -584,7 +584,7 @@ class Head:
             if True == True: FileIO.log('self.PIPETTES[',axis,'].theContainers:\n\n',self.PIPETTES[axis].theContainers)
             for name in self.PIPETTES[axis].theContainers:
                 #debug
-                if True == True: FileIO.log('self.PIPETTES[',axis,'].theContainers[',name,']:\n\n',self.PIPETTES[axis].theContainers[name])
+                if True == True: FileIO.log('self.PIPETTES[',axis,'].theContainers[',name,']:\n',self.PIPETTES[axis].theContainers[name],'\n\n')
                 response[axis][name] = self.PIPETTES[axis].theContainers[name]
   
         self.save_pipette_values()

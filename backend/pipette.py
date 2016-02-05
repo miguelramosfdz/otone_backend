@@ -304,7 +304,8 @@ class Pipette(Tool):
                 #js console.log('axis '+self.axis+ 'calibrated container '+containerName)
                 #js console.log(self.theContainers[containerName])
             #debug
-            if True == True: FileIO.log('\naxis ',self.axis, 'calibrated container ',containerName,'\n')
+            if True == True: FileIO.log('axis ',self.axis, ' calibrated container ',containerName,'\n')
+            FileIO.log('theContainers[',containerName,']:\n',self.theContainers[containerName],'\n')
 
 
     #from pipette.js
