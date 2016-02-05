@@ -101,7 +101,7 @@ class GlobalVariables():
         client_status = status
         print('client_status - set_client_status: ',client_status)
         session_factory.session.publish('com.opentrons.robot_ready',True)
-        head.send_current_protocol()
+        head.send_current_protocol(self)
 
 
 class WampComponent(wamp.ApplicationSession):
