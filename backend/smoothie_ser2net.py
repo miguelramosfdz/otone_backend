@@ -237,6 +237,7 @@ class Smoothie(object):
         #if debug == True:
         if self.old_msg != msg:
             ok_print = True
+            self.old_msg = msg
             #FileIO.log('smoothie_ser2net.smoothie_handler called')
             if verbose == True: FileIO.log('\n\tmsg: ',msg,'\n')
         self.on_raw_data(msg)   #self
