@@ -530,7 +530,7 @@ class Head:
             
 
     def send_current_protocol(self):
-        current_protocol = FileIO.get_dict_from_json(os.path.join(self.dir_par_par_,'otone_data/current_protocol.json'))
+        current_protocol = FileIO.get_dict_from_json(os.path.join(self.dir_par_par_path,'otone_data/current_protocol.json'))
         self.pubber.send_message('current_protocol',current_protocol)
 
 

@@ -121,7 +121,7 @@ def write_led(num, val):
     Not currently implemented. This is in anticipation of having LED indicators
     """
     if debug == True: FileIO.log('script_keeper.write_led called')
-    subprocess.call([os.path.join(dir_path,'../../otone_scripts/write_led.sh'),str(num),str(val)])
+    #subprocess.call([os.path.join(dir_path,'../../otone_scripts/write_led.sh'),str(num),str(val)])
 
 def set_connection_status(num):
     """Set the connection-status in otconfig
